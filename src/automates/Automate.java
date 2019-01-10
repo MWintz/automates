@@ -32,15 +32,18 @@ public class Automate {
 		this.automate = automate;
 	}
 	
-	public ArrayList<State> getInitialState() {
-		ArrayList<State> initial_state=new ArrayList<State>();
+	public ArrayList<State> getInitial_Final_State(String type) {
+		ArrayList<State> initial_final_state=new ArrayList<State>();
 		
 		for(State states : automate.values()) {
-			if(states.isInitial()) {
-				initial_state.add(states);
+			if(states.isInitial() && type.equals("initial")) {
+				initial_final_state.add(states);
+			}
+			else if(states.isFinal() && type.equals("final")) {
+				initial_final_state.add(states);
 			}
 		}	
-		return initial_state;
+		return initial_final_state;
 	}
 	
 	public String wordRecognition(String word) {
@@ -54,11 +57,11 @@ public class Automate {
 		stop=false;
 		word_index=0;
 		word=word+"$";
-		ArrayList<State> as=getInitialState();
+		ArrayList<State> as=getInitial_Final_State("initial");
 		
 		for(int i=0; i<as.size(); i++) {
 		
-			current_state=getInitialState().get(i);
+			current_state=as.get(i);
 			//treatment
 			do {
 				current_symbol=word.charAt(word_index);
@@ -89,7 +92,7 @@ public class Automate {
 		
 		return result ? "accepted" : "not accepted";
 	}
-	//pas finis
+	//not yet
 	boolean equals(Automate a) {
 		boolean equals=true;
 		
@@ -110,7 +113,6 @@ public class Automate {
 		for(State states : automate.values()) {
 			sb.append(states.toString());
 		}
-		
 		return sb.toString();
 	}
 }

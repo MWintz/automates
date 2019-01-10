@@ -1,20 +1,19 @@
 package automates;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 public class State {
 
 	private String id_state;
 	private boolean isFinal;
 	private boolean isInitial;
-	private ArrayList<Transition> transition;//
+	private HashSet<Transition> transition;//
 	
 	public State(String id_sate, boolean isFinal, boolean isInitial) {
 		this.id_state=id_sate;
 		this.isFinal=isFinal;
 		this.isInitial=isInitial;
-		transition=new ArrayList<Transition>();
+		transition=new HashSet<Transition>();
 	}
 
 	public String getId_state() {
@@ -41,11 +40,11 @@ public class State {
 		this.isInitial = isInitial;
 	}
 
-	public ArrayList<Transition> getTransition() {
+	public HashSet<Transition> getTransition() {
 		return transition;
 	}
 
-	public void setTransition(ArrayList<Transition> transition) throws ExistedTransitionException{
+	public void setTransition(HashSet<Transition> transition) throws ExistedTransitionException{
 		this.transition = transition;
 	}
 	
