@@ -92,6 +92,10 @@ public class Automate {
 		
 		return result ? "accepted" : "not accepted";
 	}
+	//this function is used to synchronize a PLC "removed epsilon transition"
+	public void synchronization() {
+		
+	}
 	//not yet
 	boolean equals(Automate a) {
 		boolean equals=true;
