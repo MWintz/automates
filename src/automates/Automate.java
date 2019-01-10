@@ -96,10 +96,9 @@ public class Automate {
 	boolean equals(Automate a) {
 		boolean equals=true;
 		
-		if(this.automate.size()==a.automate.size())
-			for(State states : automate.values()) {
-				states.toString();
-			}
+		if(this.automate.size()==a.automate.size()) {
+			
+		}
 		else
 			equals=false;
 		
