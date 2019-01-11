@@ -92,12 +92,14 @@ public class Automate {
 		
 		return result ? "accepted" : "not accepted";
 	}
-	//this function is used to synchronize a PLC "removed epsilon transition"
+	/**
+	 * this function is used to synchronize a PLC "remove epsilon transition"
+	 */
 	public void synchronization() {
 		
 	}
 	//not yet
-	boolean equals(Automate a) {
+	public boolean equals(Automate a) {
 		boolean equals=true;
 		
 		if(this.automate.size()==a.automate.size()) {
@@ -108,7 +110,48 @@ public class Automate {
 		
 		return equals;
 	}
-	
+	/**
+	 * this function shows us the transition table of an PLC
+	 */
+	public String[][] transitionTable() {
+		String table_tran[][]=new String[automate.size()+1][alphabet.size()+1];
+		int j;
+
+		for(int i=1; i<alphabet.size()+1; i++)
+			table_tran[0][i]=alphabet.get(i-1).toString();
+		j=1;
+		for(State states : automate.values()) {
+			table_tran[j][0]=states.getId_state();
+			for(int i=1; i<alphabet.size()+1; i++) {
+				State target=states.targetState(table_tran[0][i].charAt(0));
+				if(target!=null)
+					table_tran[j][i]=target.getId_state();
+			}
+			j++;
+		}
+		return table_tran;
+	}
+	/**
+	 * this function print the table of transitions
+	 * @return String
+	 */
+	public String transitionTableString() {
+		StringBuffer sb=new StringBuffer("Automate : alphabet={" + alphabet + "}\n");
+		String table_tran[][]=transitionTable();
+		
+		for(int i=0; i<automate.size(); i++) {
+			for(int j=0; j<alphabet.size()+1; j++) {
+				if(i==0 && j==0)
+					sb.append("\t");
+				else if(table_tran[i][j]==null)
+					sb.append("\tX");
+				else
+					sb.append("\t"+table_tran[i][j]);
+			}
+			sb.append("\n");
+		}	
+		return sb.toString();
+	}
 	@Override
 	public String toString() {
 		StringBuffer sb=new StringBuffer("Automate : alphabet={" + alphabet + "}\n");
