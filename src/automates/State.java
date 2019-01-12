@@ -70,7 +70,7 @@ public class State {
 		HashSet<Transition> newTransition=new HashSet<Transition>();
 		for(Iterator<Transition>it=transition.iterator(); it.hasNext(); ) {
 			Transition tran=it.next();
-			if(!tran.getState().getId_state().equals(id_State))
+			if(!tran.getLabel().equals(Alphabet.epsilon_alph) || !tran.getState().getId_state().equals(id_State))
 				newTransition.add(tran);			
 		}
 		setTransition(newTransition);
