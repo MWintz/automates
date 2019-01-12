@@ -50,18 +50,19 @@ public class Automate {
 		boolean result,stop;
 		State current_state,target_state;
 		char current_symbol;
-		int word_index;
+		int word_index,i;
 		
 		//initialization
 		result=false;
 		stop=false;
-		word_index=0;
 		word=word+"$";
 		ArrayList<State> as=getInitial_Final_State("initial");
+		i=0; 
 		
-		for(int i=0; i<as.size(); i++) {
-		
+		while(i<as.size() && !result) {
+			
 			current_state=as.get(i);
+			word_index=0;
 			//treatment
 			do {
 				current_symbol=word.charAt(word_index);
@@ -88,6 +89,7 @@ public class Automate {
 				}
 				
 			}while(!stop);
+			i++;
 		}
 		
 		return result ? "accepted" : "not accepted";
