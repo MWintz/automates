@@ -4,8 +4,9 @@ public class Alphabet {
 	
 	private char value;
 	private boolean epsilon;
+	public static Alphabet epsilon_alph = new Alphabet();
 	
-	public Alphabet() {
+	private Alphabet() {
 		value='E';
 		epsilon=true;
 	}

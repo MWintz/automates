@@ -93,10 +93,65 @@ public class Automate {
 		return result ? "accepted" : "not accepted";
 	}
 	/**
+	 * this function return to us the incoming epsilon transitions of a state
+	 */
+	public ArrayList<State> incomingEpsilonTransitions(State state){
+		ArrayList<State> incoming_state=new ArrayList<State>();
+		for(State states : automate.values()) {
+			if(states.existTransition(Alphabet.epsilon_alph, state))
+				incoming_state.add(states);
+		}	
+		return incoming_state;
+	}
+	/**
+	 * this function return to us all the incoming transitions of a state
+	 */
+	public ArrayList<State> incomingTransitions(State state){
+		ArrayList<State> incoming_state=new ArrayList<State>();
+		for(State states : automate.values()) {
+			for(Iterator<Alphabet>it=alphabet.iterator(); it.hasNext(); ) {
+				Alphabet al=it.next();
+				if(states.existTransition(al, state))
+					incoming_state.add(states);
+			}
+		}	
+		return incoming_state;
+	}
+	/**
 	 * this function is used to synchronize a PLC "remove epsilon transition"
 	 */
 	public void synchronization() {
+		ArrayList<State> incomingEpsilonState=new ArrayList<State>();
+		HashMap<String,State> new_automate=new HashMap<String,State>();
+		int number_tran=0;
+		boolean delet=false;
 		
+		for(State states : automate.values()) {
+			incomingEpsilonState=incomingEpsilonTransitions(states);
+			number_tran=incomingTransitions(states).size();
+			if(incomingEpsilonState!=null) {
+				for(State incomingState : incomingEpsilonState) {
+					incomingState.copyTransition(states);
+					incomingState.deletEpsilonTransition(states.getId_state());
+					if(states.isFinal())
+						incomingState.setFinal(true);
+					if(incomingState.isInitial()) {
+						states.setInitial(true);
+						delet=true;
+					}
+				}
+			}
+			if(incomingEpsilonState.size()!=number_tran)
+				new_automate.put(states.getId_state(), states);
+			else {
+				if(states.isInitial() && !delet)
+					new_automate.put(states.getId_state(), states);
+				else
+					delet=false;
+			}
+		}
+		this.alphabet.remove(Alphabet.epsilon_alph);
+		setAutomate(new_automate);
 	}
 	//not yet
 	public boolean equals(Automate a) {
@@ -139,7 +194,7 @@ public class Automate {
 		StringBuffer sb=new StringBuffer("Automate : alphabet={" + alphabet + "}\n");
 		String table_tran[][]=transitionTable();
 		
-		for(int i=0; i<automate.size(); i++) {
+		for(int i=0; i<automate.size()+1; i++) {
 			for(int j=0; j<alphabet.size()+1; j++) {
 				if(i==0 && j==0)
 					sb.append("\t");

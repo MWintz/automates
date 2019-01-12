@@ -6,7 +6,7 @@ public class Transition {
 	private State state;
 	
 	public Transition(State state) {
-		label=new Alphabet();
+		label=Alphabet.epsilon_alph;
 		this.state=state;
 	}
 	

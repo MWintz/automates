@@ -44,7 +44,7 @@ public class State {
 		return transition;
 	}
 
-	public void setTransition(HashSet<Transition> transition) throws ExistedTransitionException{
+	public void setTransition(HashSet<Transition> transition){
 		this.transition = transition;
 	}
 	
@@ -64,6 +64,16 @@ public class State {
 		else {
 			throw new ExistedTransitionException("La transistion : "+transition+" n'existe pas dans l'état ("+id_state+")");
 		}
+	}
+	
+	public void deletEpsilonTransition(String id_State) {
+		HashSet<Transition> newTransition=new HashSet<Transition>();
+		for(Iterator<Transition>it=transition.iterator(); it.hasNext(); ) {
+			Transition tran=it.next();
+			if(!tran.getState().getId_state().equals(id_State))
+				newTransition.add(tran);			
+		}
+		setTransition(newTransition);
 	}
 	
 	public boolean existTransition(Alphabet symbol, State target_state) {
@@ -101,6 +111,13 @@ public class State {
 		return target_state;
 	}
 	
+	public void copyTransition(State state) {
+		for(Iterator<Transition>it=state.getTransition().iterator(); it.hasNext(); ) {
+			Transition tran=it.next();
+			this.transition.add(tran);
+		}
+	}
+	
 	public boolean equals(State state) {
 		boolean equals;
 		
@@ -110,7 +127,15 @@ public class State {
 	}
 	
 	public String toString() {
-		 StringBuffer sb=new StringBuffer("\nState ("+id_state+") : {\n");
+		StringBuffer sb=new StringBuffer();
+		 if(isFinal && isInitial)
+			sb.append("\nState i+f("+id_state+") : {\n");
+		 else if(isInitial)
+			sb.append("\nState i("+id_state+") : {\n");
+		 else if(isFinal)
+			sb.append("\nState f("+id_state+") : {\n");
+		 else
+			sb.append("\nState ("+id_state+") : {\n");
 		 
 		 for(Iterator<Transition> it=transition.iterator(); it.hasNext(); ) {
 			 sb.append("\t"+it.next().toString());

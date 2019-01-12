@@ -9,16 +9,16 @@ public class Main {
 		State s1,s2,s3,s4,s5,s6;
 		Transition t1,t2,t3,t4,t5,t6,t7;
 		Automate automate;
-		String word;
+		//String word;
 		
 		ArrayList<Alphabet> alphabets=new ArrayList<Alphabet>();
 		HashMap<String,State> states=new HashMap<String,State>();
 		
 		a=new Alphabet('a', false);
 		b=new Alphabet('b', false);
-		epsilon=new Alphabet();
+		epsilon=Alphabet.epsilon_alph;
 		
-		word="abaaba";
+		//word="a";
 		
 		alphabets.add(a);
 		alphabets.add(b);
@@ -72,9 +72,11 @@ public class Main {
 		states.put(s6.getId_state(), s6);
 		
 		automate.setAutomate(states);
-		automate.transitionTable();
 		
 		System.out.println(automate.transitionTableString());
-		System.out.println("the word :("+word+")-> has been "+automate.wordRecognition(word));
+		//System.out.println("the word :("+word+")-> has been "+automate.wordRecognition(word));
+		automate.synchronization();
+		System.out.println(automate.transitionTableString());
+		System.out.println(automate);
 	}
 }
