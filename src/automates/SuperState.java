@@ -1,7 +1,5 @@
 package automates;
 
-//import java.util.ArrayList;
-
 public class SuperState extends State{
 
 	public SuperState(String id_sate, boolean isFinal, boolean isInitial) {
@@ -15,6 +13,10 @@ public class SuperState extends State{
 		this.setTransition(state.getTransition());
 	}
 	
+	public SuperState(boolean b, boolean c) {
+		
+	}
+
 	public void addState (State state) {
 		if (state.isFinal()) {
 			this.setFinal(true);
@@ -22,7 +24,7 @@ public class SuperState extends State{
 		if (state.isInitial()) {
 			this.setInitial(true);
 		}
-		this.setId_state(this.getId_state()+"+"+state.getId_state());
+		this.setId_state(this.getId_state()+","+state.getId_state());
 		this.transition.addAll(state.getTransition());
 	}
 

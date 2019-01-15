@@ -76,7 +76,7 @@ public class Automate {
 					stop=true;
 				}
 				else {
-					target_state=current_state.targetState(current_symbol);
+					target_state=current_state.targetState(current_symbol).get(0);
 					
 					if(target_state != null) {
 						current_state=target_state;
@@ -190,9 +190,17 @@ public class Automate {
 		for(State states : automate.values()) {
 			table_tran[j][0]=states.getId_state();
 			for(int i=1; i<alphabet.size()+1; i++) {
-				State target=states.targetState(table_tran[0][i].charAt(0));
-				if(target!=null)
-					table_tran[j][i]=target.getId_state();
+				ArrayList<State> target=states.targetState(table_tran[0][i].charAt(0));
+				if(target!=null) {
+					for (int k=0; k<target.size(); k++) {
+						if(k==0)
+							table_tran[j][i]=target.get(k).getId_state();	
+						else {
+							table_tran[j][i]+=",";
+							table_tran[j][i]+=target.get(k).getId_state();
+						}
+					}
+				}
 			}
 			j++;
 		}
@@ -220,7 +228,7 @@ public class Automate {
 		return sb.toString();
 	}
 	
-	/* Algo Deter */
+	/*Algo Deter*/
 	public Automate determinize() {
 		
 		Automate determinizedAutomaton = new Automate(alphabet);
@@ -231,11 +239,12 @@ public class Automate {
 		ArrayList<SuperState> treated = new ArrayList<SuperState>();
 		ArrayList<SuperState> toTreat = new ArrayList<SuperState>();
 		
-		SuperState entry = new SuperState(null, true, false);
+		SuperState entry = new SuperState(true, false);
 						
 		for (State state : init) {
 			entry.addState(state);
-		}	
+		}
+		System.out.println(entry);
 		toTreat.add(entry);
 		
 		while (!toTreat.isEmpty()) {
@@ -248,7 +257,7 @@ public class Automate {
 						newss.addState(transi.getState());
 					}
 				}
-				if (!treated.contains(newss) && newss != ss) {
+				if (!treated.contains(newss) && !newss.equals(ss)) {
 					toTreat.add(newss);
 				}
 			}
@@ -259,9 +268,9 @@ public class Automate {
 		for (SuperState term : treated) {
 			finish.put(term.getId_state(), term.toState());
 		}
-		
 		determinizedAutomaton.setAlphabet(alphabet);
 		determinizedAutomaton.setAutomate(finish);
+		
 		return determinizedAutomaton;
 	}
 

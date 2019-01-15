@@ -10,10 +10,10 @@ public class State {
 	protected HashSet<Transition> transition;
 	
 	public State() {
-		this.id_state = "void";
+		this.id_state = "";
 		this.isFinal = false;
 		this.isInitial = false;
-		this.transition = null;
+		this.transition = new HashSet<Transition>();
 	}
 	
 	public State(String id_sate, boolean isFinal, boolean isInitial) {
@@ -101,17 +101,17 @@ public class State {
 		return exist;
 	}
 	
-	public State targetState(char symbol) {
-		State target_state;
+	public ArrayList<State> targetState(char symbol) {
+		ArrayList<State> target_state;
 		Transition tran;
 		
-		target_state=null;
+		target_state=new ArrayList<State>();
 		
 		for(Iterator<Transition> it=transition.iterator(); it.hasNext(); ) {
 			tran=it.next();
 			
 			if(tran.getLabel().getValue()==symbol) {
-				target_state=tran.getState();
+				target_state.add(tran.getState());
 			}
 		}
 		
