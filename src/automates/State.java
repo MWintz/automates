@@ -7,7 +7,14 @@ public class State {
 	private String id_state;
 	private boolean isFinal;
 	private boolean isInitial;
-	private HashSet<Transition> transition;
+	protected HashSet<Transition> transition;
+	
+	public State() {
+		this.id_state = "void";
+		this.isFinal = false;
+		this.isInitial = false;
+		this.transition = null;
+	}
 	
 	public State(String id_sate, boolean isFinal, boolean isInitial) {
 		this.id_state=id_sate;

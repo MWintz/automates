@@ -219,6 +219,52 @@ public class Automate {
 		}	
 		return sb.toString();
 	}
+	
+	/* Algo Deter */
+	public Automate determinize() {
+		
+		Automate determinizedAutomaton = new Automate(alphabet);
+		HashMap<String, State> finish = new HashMap<String, State>();
+		
+		ArrayList<State> init = getInitial_Final_State("initial");
+		
+		ArrayList<SuperState> treated = new ArrayList<SuperState>();
+		ArrayList<SuperState> toTreat = new ArrayList<SuperState>();
+		
+		SuperState entry = new SuperState(null, true, false);
+						
+		for (State state : init) {
+			entry.addState(state);
+		}	
+		toTreat.add(entry);
+		
+		while (!toTreat.isEmpty()) {
+			int count = toTreat.size();
+			SuperState ss = toTreat.get(count-1);
+			for (Alphabet alpha : alphabet) {
+				SuperState newss = new SuperState(null, false, false);
+				for (Transition transi : ss.getTransition()) {
+					if(transi.getLabel()==alpha) {
+						newss.addState(transi.getState());
+					}
+				}
+				if (!treated.contains(newss) && newss != ss) {
+					toTreat.add(newss);
+				}
+			}
+			treated.add(ss);
+			toTreat.remove(ss);
+		}
+		
+		for (SuperState term : treated) {
+			finish.put(term.getId_state(), term.toState());
+		}
+		
+		determinizedAutomaton.setAlphabet(alphabet);
+		determinizedAutomaton.setAutomate(finish);
+		return determinizedAutomaton;
+	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb=new StringBuffer("Automate : alphabet={" + alphabet + "}\n");
