@@ -8,11 +8,12 @@ public class Main {
 		Alphabet a,b,c,epsilon;
 		State s1,s2,s3;
 		Transition t1,t2,t3,t4,t5;
-		Automate automate;
+		Automate automate,automate1;
 		String word;
 		
 		ArrayList<Alphabet> alphabets=new ArrayList<Alphabet>();
 		HashMap<String,State> states=new HashMap<String,State>();
+		HashMap<String,State> states1=new HashMap<String,State>();
 		
 		a=new Alphabet('a', false);
 		b=new Alphabet('b', false);
@@ -27,6 +28,7 @@ public class Main {
 		alphabets.add(epsilon);
 		
 		automate=new Automate(alphabets);
+		automate1=new Automate(alphabets);
 		
 		s1=new State("1", false, true);
 		s2=new State("2", false, false);
@@ -58,11 +60,19 @@ public class Main {
 		states.put(s2.getId_state(), s2);
 		states.put(s3.getId_state(), s3);
 		
+		s1.setId_state("10");
+		states1.put(s1.getId_state(), s1);
+		states1.put(s2.getId_state(), s2);
+		states1.put(s3.getId_state(), s3);
+		
 		automate.setAutomate(states);
+		automate1.setAutomate(states1);
 		
 		System.out.println(automate.transitionTableString());
 		automate.synchronization();
 		System.out.println(automate.transitionTableString());
 		System.out.println("the word :("+word+")-> has been "+automate.wordRecognition(word));
+		System.out.println(automate1.transitionTableString());
+		System.out.println("the tow automates are: "+automate.equals(automate1, "OUI"));
 	}
 }

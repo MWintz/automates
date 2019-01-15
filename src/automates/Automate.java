@@ -155,17 +155,27 @@ public class Automate {
 		this.alphabet.remove(Alphabet.epsilon_alph);
 		setAutomate(new_automate);
 	}
-	//not yet
-	public boolean equals(Automate a) {
+	/**
+	 * this function allow us to know if tow automates are equals
+	 * @param a
+	 * @return equals true if this automate is equals to a
+	 */
+	public String equals(Automate a,String with_id) {
 		boolean equals=true;
+		HashMap<String,State> automate_a=a.getAutomate();
 		
-		if(this.automate.size()==a.automate.size()) {
-			
-		}
+		if(this.automate.size()==a.automate.size())
+			for(State states : this.automate.values())
+				if(!automate_a.containsValue(states))
+					equals=false;
+				else
+					if(with_id.equals("YES"))
+						if(!automate_a.containsKey(states.getId_state()))
+							equals=false;
 		else
 			equals=false;
 		
-		return equals;
+		return equals ? "euqals" : "not equals";
 	}
 	/**
 	 * this function shows us the transition table of an PLC
@@ -201,7 +211,7 @@ public class Automate {
 				if(i==0 && j==0)
 					sb.append("\t");
 				else if(table_tran[i][j]==null)
-					sb.append("\tX");
+					sb.append("\t°");
 				else
 					sb.append("\t"+table_tran[i][j]);
 			}
