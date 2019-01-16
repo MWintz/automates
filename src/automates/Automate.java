@@ -6,10 +6,12 @@ public class Automate {
 	
 	private ArrayList<Alphabet> alphabet;
 	private HashMap<String,State> automate;
+	private boolean determinist;
 	
 	public Automate() {
 		alphabet=new ArrayList<Alphabet>();
 		automate=new HashMap<String,State>();
+		determinist = this.testDeterminist();
 	}
 	
 	public  Automate(ArrayList<Alphabet> alphabet) {
@@ -32,6 +34,21 @@ public class Automate {
 		this.automate = automate;
 	}
 	
+	public boolean isDeterminist() {
+		return determinist;
+	}
+
+	public void setDeterminist(boolean determinist) {
+		this.determinist = determinist;
+	}
+	
+	//TODO complete method
+	private boolean testDeterminist() {
+		boolean test = false;
+		
+		return test;
+	}
+
 	public ArrayList<State> getInitial_Final_State(String type) {
 		ArrayList<State> initial_final_state=new ArrayList<State>();
 		
