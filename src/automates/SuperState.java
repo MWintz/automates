@@ -23,7 +23,18 @@ public class SuperState extends State{
 
 	public void addState (State state) {
 		this.setId_state(this.getId_state()+","+state.getId_state());
-		this.transition.addAll(state.getTransition());
+		for (Transition transi : state.getTransition()) {
+			boolean test = false;
+			for (Transition transi2 : transition) {
+				if (transi.equals(transi2)) {
+					test = true;
+				}
+			}
+			if (test == false) {
+				this.transition.add(transi);
+			}
+		}
+//		this.transition.addAll(state.getTransition());
 		this.list.add(state);
 	}
 
@@ -72,6 +83,14 @@ public class SuperState extends State{
 
 	public void setList(HashSet<State> list) {
 		this.list = list;
+	}
+	
+	public boolean equals(SuperState ss) {
+		boolean test = false;
+		if (ss.getList().equals(list)) {
+			test = true;
+		}
+		return test;
 	}
 	
 	
