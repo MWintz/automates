@@ -236,7 +236,7 @@ public class Automate {
 				if(i==0 && j==0)
 					sb.append("\t");
 				else if(table_tran[i][j]==null)
-					sb.append("\tÂ°");
+					sb.append("\t°");
 				else
 					sb.append("\t"+table_tran[i][j]);
 			}
@@ -264,7 +264,8 @@ public class Automate {
 		String entryName = entry.getId_state();
 		entryName = entryName.subSequence(1, entryName.length()).toString();
 		entry.setId_state(entryName);
-//		System.out.println(entry);
+		entry.setInitial(true);
+		System.out.println(entry);
 		toTreat.add(entry);
 		
 		while (!toTreat.isEmpty()) {
@@ -280,7 +281,10 @@ public class Automate {
 				String name = newss.getId_state();
 				name = name.subSequence(1, name.length()).toString();
 				newss.setId_state(name);
-//				System.out.println(newss);
+				if (newss.containsFinal()) {
+					newss.setFinal(true);
+				}
+				
 				boolean test = false;
 				for (SuperState testState : created) {
 					if (testState.equals(newss)) {
@@ -297,8 +301,10 @@ public class Automate {
 					}
 					if (test == false) {
 						toTreat.add(newss);
+						System.out.println(newss);
 					}
 				}
+				
 			}
 			created.add(ss);
 			toTreat.remove(ss);

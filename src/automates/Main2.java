@@ -21,7 +21,7 @@ public class Main2 {
 		
 		automate=new Automate(alphabets);
 		
-		s0=new State("0", false, true);;
+		s0=new State("0", false, true);
 		s1=new State("1", false, false);
 		s2=new State("2", false, false);
 		s3=new State("3", true, false);
