@@ -33,6 +33,7 @@ public class SuperState extends State{
 		state.setId_state(this.getId_state());
 		state.setFinal(this.isFinal());
 		state.setInitial(this.isInitial());
+		state.setTransition(this.getTransition());
 		return state;
 	}
 }

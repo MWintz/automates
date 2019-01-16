@@ -253,7 +253,7 @@ public class Automate {
 		
 		ArrayList<State> init = getInitial_Final_State("initial");
 		
-		ArrayList<SuperState> treated = new ArrayList<SuperState>();
+		HashSet<SuperState> created = new HashSet<SuperState>();
 		ArrayList<SuperState> toTreat = new ArrayList<SuperState>();
 		
 		SuperState entry = new SuperState(true, false);
@@ -261,28 +261,50 @@ public class Automate {
 		for (State state : init) {
 			entry.addState(state);
 		}
-		System.out.println(entry);
+		String entryName = entry.getId_state();
+		entryName = entryName.subSequence(1, entryName.length()).toString();
+		entry.setId_state(entryName);
+//		System.out.println(entry);
 		toTreat.add(entry);
 		
 		while (!toTreat.isEmpty()) {
 			int count = toTreat.size();
 			SuperState ss = toTreat.get(count-1);
 			for (Alphabet alpha : alphabet) {
-				SuperState newss = new SuperState(null, false, false);
+				SuperState newss = new SuperState("", false, false);
 				for (Transition transi : ss.getTransition()) {
 					if(transi.getLabel()==alpha) {
 						newss.addState(transi.getState());
 					}
 				}
-				if (!treated.contains(newss) && !newss.equals(ss)) {
-					toTreat.add(newss);
+				String name = newss.getId_state();
+				name = name.subSequence(1, name.length()).toString();
+				newss.setId_state(name);
+//				System.out.println(newss);
+				boolean test = false;
+				for (SuperState testState : created) {
+					if (testState.equals(newss)) {
+						test = true;
+					}
+				}
+				if (test == false) {
+					created.add(newss);
+					test = false;
+					for (SuperState testState2 : toTreat) {
+						if (testState2.equals(newss)) {
+							test = true;
+						}
+					}
+					if (test == false) {
+						toTreat.add(newss);
+					}
 				}
 			}
-			treated.add(ss);
+			created.add(ss);
 			toTreat.remove(ss);
 		}
 		
-		for (SuperState term : treated) {
+		for (SuperState term : created) {
 			finish.put(term.getId_state(), term.toState());
 		}
 		determinizedAutomaton.setAlphabet(alphabet);
