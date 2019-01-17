@@ -94,7 +94,6 @@ public class Automate {
 				}
 				else {
 					target_state=current_state.targetState(current_symbol).get(0);
-					
 					if(target_state != null) {
 						current_state=target_state;
 						word_index=word_index+1;
@@ -236,7 +235,7 @@ public class Automate {
 				if(i==0 && j==0)
 					sb.append("\t");
 				else if(table_tran[i][j]==null)
-					sb.append("\t°");
+					sb.append("\tÂ°");
 				else
 					sb.append("\t"+table_tran[i][j]);
 			}
@@ -258,14 +257,12 @@ public class Automate {
 		
 		SuperState entry = new SuperState(true, false);
 						
-		for (State state : init) {
+		for (State state : init)
 			entry.addState(state);
-		}
 		String entryName = entry.getId_state();
 		entryName = entryName.subSequence(1, entryName.length()).toString();
 		entry.setId_state(entryName);
 		entry.setInitial(true);
-		System.out.println(entry);
 		toTreat.add(entry);
 		
 		while (!toTreat.isEmpty()) {
@@ -273,59 +270,69 @@ public class Automate {
 			SuperState ss = toTreat.get(count-1);
 			for (Alphabet alpha : alphabet) {
 				SuperState newss = new SuperState("", false, false);
-				for (Transition transi : ss.getTransition()) {
-					if(transi.getLabel()==alpha) {
+				for (Transition transi : ss.getTransition())
+					if(transi.getLabel()==alpha)
 						newss.addState(transi.getState());
-					}
-				}
 				String name = newss.getId_state();
 				name = name.subSequence(1, name.length()).toString();
 				newss.setId_state(name);
-				if (newss.containsFinal()) {
+				if (newss.containsFinal())
 					newss.setFinal(true);
-				}
 				
 				boolean test = false;
-				for (SuperState testState : created) {
-					if (testState.equals(newss)) {
+				for (SuperState testState : created)
+					if (testState.equals(newss))
 						test = true;
-					}
-				}
 				if (test == false) {
 					created.add(newss);
 					test = false;
-					for (SuperState testState2 : toTreat) {
-						if (testState2.equals(newss)) {
+					for (SuperState testState2 : toTreat)
+						if (testState2.equals(newss)) 
 							test = true;
-						}
-					}
-					if (test == false) {
-						toTreat.add(newss);
-						System.out.println(newss);
-					}
 				}
+				if (test == false) 
+					toTreat.add(newss);
 				
 			}
 			created.add(ss);
 			toTreat.remove(ss);
 		}
-		
-		for (SuperState term : created) {
+		for (SuperState term : created) 
 			finish.put(term.getId_state(), term.toState());
-		}
+
 		determinizedAutomaton.setAlphabet(alphabet);
 		determinizedAutomaton.setAutomate(finish);
+		determinizedAutomaton.organiseAutomate();
 		
 		return determinizedAutomaton;
 	}
 
+	private void organiseAutomate() {
+		for(State states : automate.values()) {
+			String id_state = null;
+			HashSet<Transition>transition=new HashSet<Transition>();
+			for(int i=0; i<alphabet.size(); i++) {
+				ArrayList<State> target=states.targetState(alphabet.get(i).getValue());
+				if(!target.isEmpty())
+					for(int j=0; j<target.size(); j++)
+						if(j==0)
+							id_state=target.get(j).getId_state();
+						else
+							id_state+=","+target.get(j).getId_state();;
+				State ss=automate.get(id_state);
+				Transition tran=new Transition(alphabet.get(i), ss);
+				transition.add(tran);
+			}
+			states.setTransition(transition);
+		}
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer sb=new StringBuffer("Automate : alphabet={" + alphabet + "}\n");
 		
-		for(State states : automate.values()) {
+		for(State states : automate.values())
 			sb.append(states.toString());
-		}
 		return sb.toString();
 	}
 }
