@@ -246,7 +246,6 @@ public class Automate {
 	
 	/*Algo Deter*/
 	public Automate determinize() {
-		
 		Automate determinizedAutomaton = new Automate(alphabet);
 		HashMap<String, State> finish = new HashMap<String, State>();
 		
@@ -255,27 +254,19 @@ public class Automate {
 		HashSet<SuperState> created = new HashSet<SuperState>();
 		ArrayList<SuperState> toTreat = new ArrayList<SuperState>();
 		
-		SuperState entry = new SuperState(true, false);
+		SuperState entry = new SuperState(false, true);
 						
 		for (State state : init)
 			entry.addState(state);
-		String entryName = entry.getId_state();
-		entryName = entryName.subSequence(1, entryName.length()).toString();
-		entry.setId_state(entryName);
-		entry.setInitial(true);
 		toTreat.add(entry);
 		
 		while (!toTreat.isEmpty()) {
-			int count = toTreat.size();
-			SuperState ss = toTreat.get(count-1);
+			SuperState ss = toTreat.get(0);
 			for (Alphabet alpha : alphabet) {
 				SuperState newss = new SuperState("", false, false);
 				for (Transition transi : ss.getTransition())
-					if(transi.getLabel()==alpha)
+					if(transi.getLabel().equals(alpha))
 						newss.addState(transi.getState());
-				String name = newss.getId_state();
-				name = name.subSequence(1, name.length()).toString();
-				newss.setId_state(name);
 				if (newss.containsFinal())
 					newss.setFinal(true);
 				
@@ -283,14 +274,14 @@ public class Automate {
 				for (SuperState testState : created)
 					if (testState.equals(newss))
 						test = true;
-				if (test == false) {
+				if (test == false && newss.getId_state()!="") {
 					created.add(newss);
 					test = false;
 					for (SuperState testState2 : toTreat)
 						if (testState2.equals(newss)) 
 							test = true;
 				}
-				if (test == false) 
+				if (test == false && newss.getId_state()!="") 
 					toTreat.add(newss);
 				
 			}
@@ -313,15 +304,16 @@ public class Automate {
 			HashSet<Transition>transition=new HashSet<Transition>();
 			for(int i=0; i<alphabet.size(); i++) {
 				ArrayList<State> target=states.targetState(alphabet.get(i).getValue());
-				if(!target.isEmpty())
+				if(!target.isEmpty()) {
 					for(int j=0; j<target.size(); j++)
 						if(j==0)
 							id_state=target.get(j).getId_state();
 						else
 							id_state+=","+target.get(j).getId_state();;
-				State ss=automate.get(id_state);
-				Transition tran=new Transition(alphabet.get(i), ss);
-				transition.add(tran);
+					State ss=automate.get(id_state);
+					Transition tran=new Transition(alphabet.get(i), ss);
+					transition.add(tran);
+				}
 			}
 			states.setTransition(transition);
 		}

@@ -17,12 +17,18 @@ public class SuperState extends State{
 		list.add(state);
 	}
 	
-	public SuperState(boolean b, boolean c) {
-		
+	public SuperState(boolean isFinal, boolean isInitial) {
+		this.setFinal(isFinal);
+		this.setInitial(isInitial);
+		this.setTransition(new HashSet<Transition>());
+		this.setId_state("");
 	}
 
 	public void addState (State state) {
-		this.setId_state(this.getId_state()+","+state.getId_state());
+		if(this.getId_state()!="")
+			this.setId_state(this.getId_state()+","+state.getId_state());
+		else
+			this.setId_state(state.getId_state());
 		for (Transition transi : state.getTransition()) {
 			boolean test = false;
 			for (Transition transi2 : transition) {
@@ -34,7 +40,6 @@ public class SuperState extends State{
 				this.transition.add(transi);
 			}
 		}
-//		this.transition.addAll(state.getTransition());
 		this.list.add(state);
 	}
 
@@ -49,31 +54,25 @@ public class SuperState extends State{
 	
 	public boolean contains (State state) {
 		boolean test = false;
-		for (State testState : this.list) {
-			if (testState.equals(state)) {
+		for (State testState : this.list)
+			if (testState.equals(state))
 				test = true;
-			}
-		}
 		return test;
 	}
 	
 	public boolean containsFinal() {
 		boolean test = false;
-		for (State testState : this.getList()) {
-			if (testState.isFinal()) {
+		for (State testState : this.getList())
+			if(testState.isFinal())
 				test = true;
-			}
-		}
 		return test;
 	}
 	
 	public boolean containsInitial() {
 		boolean test = false;
-		for (State testState : this.getList()) {
-			if (testState.isInitial()) {
+		for (State testState : this.getList())
+			if (testState.isInitial())
 				test = true;
-			}
-		}
 		return test;
 	}
 
