@@ -1,23 +1,12 @@
 package expression;
 
-public class Alphabet {
+import tree.TreeVisitor;
 
+public class Alphabet implements Tree{
 	private char value;
-	private boolean epsilon;
-	
-	public Alphabet(char value, boolean epsilon) {
-		this.value=value;
-		this.epsilon=epsilon;
-	}
 	
 	public Alphabet(char value) {
 		this.value=value;
-		this.epsilon=false;
-	}
-	
-	public Alphabet() {
-		value='E';
-		epsilon=true;
 	}
 	
 	public char getValue() {
@@ -26,14 +15,6 @@ public class Alphabet {
 
 	public void setValue(char value) {
 		this.value = value;
-	}
-
-	public boolean isEpsilon() {
-		return epsilon;
-	}
-
-	public void setEpsilon(boolean epsilon) {
-		this.epsilon = epsilon;
 	}
 
 	public Tree getLeftAlphabet() {
@@ -47,5 +28,10 @@ public class Alphabet {
 	@Override
 	public String toString() {
 		return "Alphabet ("+value+")";
+	}
+
+	@Override
+	public <T> T accept(TreeVisitor<T> visitor) {
+		return visitor.visit(this);
 	}
 }
