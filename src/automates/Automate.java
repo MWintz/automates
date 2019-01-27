@@ -171,80 +171,11 @@ public class Automate {
 		this.alphabet.remove(Alphabet.epsilon_alph);
 		setAutomate(new_automate);
 	}
-	/**
-	 * this function allow us to know if tow automates are equals
-	 * @param a
-	 * @return equals true if this automate is equals to a
-	 */
-	public String equals(Automate a,String with_id) {
-		boolean equals=true;
-		HashMap<String,State> automate_a=a.getAutomate();
-		
-		if(this.automate.size()==a.automate.size())
-			for(State states : this.automate.values())
-				if(!automate_a.containsValue(states))
-					equals=false;
-				else
-					if(with_id.equals("YES"))
-						if(!automate_a.containsKey(states.getId_state()))
-							equals=false;
-		else
-			equals=false;
-		
-		return equals ? "euqals" : "not equals";
-	}
-	/**
-	 * this function shows us the transition table of an PLC
-	 */
-	public String[][] transitionTable() {
-		String table_tran[][]=new String[automate.size()+1][alphabet.size()+1];
-		int j;
-
-		for(int i=1; i<alphabet.size()+1; i++)
-			table_tran[0][i]=alphabet.get(i-1).toString();
-		j=1;
-		for(State states : automate.values()) {
-			table_tran[j][0]=states.getId_state();
-			for(int i=1; i<alphabet.size()+1; i++) {
-				ArrayList<State> target=states.targetState(table_tran[0][i].charAt(0));
-				if(target!=null) {
-					for (int k=0; k<target.size(); k++) {
-						if(k==0)
-							table_tran[j][i]=target.get(k).getId_state();	
-						else {
-							table_tran[j][i]+=",";
-							table_tran[j][i]+=target.get(k).getId_state();
-						}
-					}
-				}
-			}
-			j++;
-		}
-		return table_tran;
-	}
-	/**
-	 * this function print the table of transitions
-	 * @return String
-	 */
-	public String transitionTableString() {
-		StringBuffer sb=new StringBuffer("Automate : alphabet={" + alphabet + "}\n");
-		String table_tran[][]=transitionTable();
-		
-		for(int i=0; i<automate.size()+1; i++) {
-			for(int j=0; j<alphabet.size()+1; j++) {
-				if(i==0 && j==0)
-					sb.append("\t");
-				else if(table_tran[i][j]==null)
-					sb.append("\t°");
-				else
-					sb.append("\t"+table_tran[i][j]);
-			}
-			sb.append("\n");
-		}	
-		return sb.toString();
-	}
 	
-	/*Algo Deter*/
+	/**
+	 * This function how allow us to determinize an automate
+	 * @return the determinize automate
+	*/
 	public Automate determinize() {
 		Automate determinizedAutomaton = new Automate(alphabet);
 		HashMap<String, State> finish = new HashMap<String, State>();
@@ -317,6 +248,82 @@ public class Automate {
 			}
 			states.setTransition(transition);
 		}
+	}
+	/**
+	 * this function allow us to know if tow automates are equals
+	 * @param a
+	 * @return equals true if this automate is equals to a
+	 */
+	public String equals(Automate a,String with_id) {
+		boolean equals=true;
+		HashMap<String,State> automate_a=a.getAutomate();
+		
+		if(this.automate.size()==a.automate.size() && this.alphabet.size()==a.alphabet.size()) {
+			for(State states : this.automate.values())
+				if(!automate_a.containsValue(states)) {
+					equals=false;
+				}
+				else {
+					if(with_id.equals("YES"))
+						if(!automate_a.containsKey(states.getId_state())) {
+							equals=false;
+						}
+				}
+		}
+		else {
+			equals=false;
+		}
+		return equals ? "euqals" : "not equals";
+	}
+	/**
+	 * this function shows us the transition table of an PLC
+	 */
+	public String[][] transitionTable() {
+		String table_tran[][]=new String[automate.size()+1][alphabet.size()+1];
+		int j;
+
+		for(int i=1; i<alphabet.size()+1; i++)
+			table_tran[0][i]=alphabet.get(i-1).toString();
+		j=1;
+		for(State states : automate.values()) {
+			table_tran[j][0]=states.getId_state();
+			for(int i=1; i<alphabet.size()+1; i++) {
+				ArrayList<State> target=states.targetState(table_tran[0][i].charAt(0));
+				if(target!=null) {
+					for (int k=0; k<target.size(); k++) {
+						if(k==0)
+							table_tran[j][i]=target.get(k).getId_state();	
+						else {
+							table_tran[j][i]+=",";
+							table_tran[j][i]+=target.get(k).getId_state();
+						}
+					}
+				}
+			}
+			j++;
+		}
+		return table_tran;
+	}
+	/**
+	 * this function print the table of transitions
+	 * @return String
+	 */
+	public String transitionTableString() {
+		StringBuffer sb=new StringBuffer("Automate : alphabet={" + alphabet + "}\n");
+		String table_tran[][]=transitionTable();
+		
+		for(int i=0; i<automate.size()+1; i++) {
+			for(int j=0; j<alphabet.size()+1; j++) {
+				if(i==0 && j==0)
+					sb.append("\t");
+				else if(table_tran[i][j]==null)
+					sb.append("\t°");
+				else
+					sb.append("\t"+table_tran[i][j]);
+			}
+			sb.append("\n");
+		}	
+		return sb.toString();
 	}
 	
 	@Override
