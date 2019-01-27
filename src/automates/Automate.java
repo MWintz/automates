@@ -34,17 +34,29 @@ public class Automate {
 		this.automate = automate;
 	}
 	
-	public boolean isDeterminist() {
-		return determinist;
+	public String isDeterminist() {
+		return determinist ? "Determinist" : "Not determinist";
 	}
 
 	public void setDeterminist(boolean determinist) {
 		this.determinist = determinist;
 	}
 	
-	//TODO complete method
+	/**
+	 * this function allow us to know if an automate is determinist or not
+	 */
 	private boolean testDeterminist() {
-		boolean test = false;
+		boolean test=true;
+		
+		if(!this.automate.isEmpty()) {
+			if(getInitial_Final_State("initial").size()!=1)
+				test=false;
+			else
+				for(State states : automate.values())
+					for(Alphabet alph : alphabet)
+						if(states.targetState(alph.getValue()).size()>1)
+							test=false;
+		}
 		
 		return test;
 	}
@@ -225,6 +237,7 @@ public class Automate {
 		determinizedAutomaton.setAlphabet(alphabet);
 		determinizedAutomaton.setAutomate(finish);
 		determinizedAutomaton.organiseAutomate();
+		determinizedAutomaton.determinist=true;
 		
 		return determinizedAutomaton;
 	}

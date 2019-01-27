@@ -67,9 +67,11 @@ public class Main2 {
 		
 		automate.setAutomate(states);
 		System.out.println(automate.transitionTableString());
+		System.out.println("this automate are "+automate.isDeterminist());
 		
 		automate=automate.determinize();
 		System.out.println(automate.transitionTableString());
+		System.out.println("this automate are "+automate.isDeterminist());
 		System.out.println("the word :("+word+")-> has been "+automate.wordRecognition(word));
 	}
 }
