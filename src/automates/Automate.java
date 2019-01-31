@@ -263,6 +263,68 @@ public class Automate {
 		}
 	}
 	/**
+	 * this function allows us to calculate the initial states towards final and aims towards that
+	 */
+	public void switchInitialToFinal() {
+		for (State states:automate.values()) {
+			if(!states.isFinal() || !states.isInitial()) {
+				if(states.isFinal()) {
+					states.setFinal(false);
+					states.setInitial(true);	
+				}
+				else if(states.isInitial()) {
+					states.setFinal(true);
+					states.setInitial(false);
+				}
+			}
+		}
+	}
+	/**
+	 * this function allows us to calculate the transpose of an automate
+	 */
+	public void transpose() {
+		HashMap<String, State>auto_tmp=new HashMap<String, State>();
+		
+		switchInitialToFinal();
+		for(State states:automate.values()) {
+			State s_tmp=new State(states.getId_state(), states.isFinal(), states.isInitial());
+			auto_tmp.put(s_tmp.getId_state(), s_tmp);
+		}
+		System.out.println("---------");
+		System.out.println(auto_tmp);
+		for(State states:automate.values()) {
+			for(Iterator<Transition>it=states.getTransition().iterator(); it.hasNext(); ) {
+				Transition tran = it.next();
+				State tar_state=tran.getState();
+				Alphabet alph=tran.getLabel();
+				Transition new_Tran=new Transition(alph, states);
+				System.out.println(tar_state.getId_state());//ici tar_state id null
+				try {
+					auto_tmp.get(tar_state.getId_state()).addTransition(new_Tran);
+				} catch (ExistedTransitionException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		setAutomate(auto_tmp);
+	}
+	/**
+	 *  this function allow us to calculate the automate minimal of this automate
+	 *  it's use the Algorithme of Brzozowski 
+	 */
+	public Automate minimisation() {
+		Automate auto_tmp;
+		this.transpose();
+		
+		if(!this.determinist)
+			auto_tmp=this.determinize();
+		else
+			auto_tmp=this;
+		
+		auto_tmp.transpose();
+		return auto_tmp.determinize();
+	}
+	/**
 	 * this function allow us to know if tow automates are equals
 	 * @param a
 	 * @return equals true if this automate is equals to a
