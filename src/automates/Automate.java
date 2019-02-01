@@ -186,12 +186,9 @@ public class Automate {
 	
 	/**
 	 * This function how allow us to determinize an automate
-	 * @return the determinize automate
 	*/
-	public Automate determinize() {
-		Automate determinizedAutomaton = new Automate(alphabet);
+	public void determinize() {
 		HashMap<String, State> finish = new HashMap<String, State>();
-		
 		ArrayList<State> init = getInitial_Final_State("initial");
 		
 		HashSet<SuperState> created = new HashSet<SuperState>();
@@ -202,16 +199,19 @@ public class Automate {
 		for (State state : init)
 			entry.addState(state);
 		toTreat.add(entry);
-		
+
 		while (!toTreat.isEmpty()) {
 			SuperState ss = toTreat.get(0);
-			for (Alphabet alpha : alphabet) {
+			for (Alphabet alpha : this.alphabet) {
 				SuperState newss = new SuperState("", false, false);
+
 				for (Transition transi : ss.getTransition())
 					if(transi.getLabel().equals(alpha))
 						newss.addState(transi.getState());
 				if (newss.containsFinal())
 					newss.setFinal(true);
+				if (newss.containsInitial())
+					newss.setInitial(true);
 				
 				boolean test = false;
 				for (SuperState testState : created)
@@ -224,8 +224,9 @@ public class Automate {
 						if (testState2.equals(newss)) 
 							test = true;
 				}
-				if (test == false && newss.getId_state()!="") 
+				if (test == false && newss.getId_state()!="") {
 					toTreat.add(newss);
+				}
 				
 			}
 			created.add(ss);
@@ -234,12 +235,9 @@ public class Automate {
 		for (SuperState term : created) 
 			finish.put(term.getId_state(), term.toState());
 
-		determinizedAutomaton.setAlphabet(alphabet);
-		determinizedAutomaton.setAutomate(finish);
-		determinizedAutomaton.organiseAutomate();
-		determinizedAutomaton.determinist=true;
-		
-		return determinizedAutomaton;
+		this.setAutomate(finish);
+		this.organiseAutomate();
+		this.determinist=true;
 	}
 
 	private void organiseAutomate() {
@@ -290,15 +288,12 @@ public class Automate {
 			State s_tmp=new State(states.getId_state(), states.isFinal(), states.isInitial());
 			auto_tmp.put(s_tmp.getId_state(), s_tmp);
 		}
-		System.out.println("---------");
-		System.out.println(auto_tmp);
 		for(State states:automate.values()) {
 			for(Iterator<Transition>it=states.getTransition().iterator(); it.hasNext(); ) {
 				Transition tran = it.next();
 				State tar_state=tran.getState();
 				Alphabet alph=tran.getLabel();
-				Transition new_Tran=new Transition(alph, states);
-				System.out.println(tar_state.getId_state());//ici tar_state id null
+				Transition new_Tran=new Transition(alph, auto_tmp.get(states.getId_state()));
 				try {
 					auto_tmp.get(tar_state.getId_state()).addTransition(new_Tran);
 				} catch (ExistedTransitionException e) {
@@ -312,17 +307,11 @@ public class Automate {
 	 *  this function allow us to calculate the automate minimal of this automate
 	 *  it's use the Algorithme of Brzozowski 
 	 */
-	public Automate minimisation() {
-		Automate auto_tmp;
+	public void minimisation() {
 		this.transpose();
-		
-		if(!this.determinist)
-			auto_tmp=this.determinize();
-		else
-			auto_tmp=this;
-		
-		auto_tmp.transpose();
-		return auto_tmp.determinize();
+		this.determinize();
+		this.transpose();
+		this.determinize();
 	}
 	/**
 	 * this function allow us to know if tow automates are equals

@@ -5,73 +5,58 @@ import java.util.HashMap;
 
 public class Main3 {
 	public static void main(String[] args) {
-		Alphabet zero,un;
-		State a,b,c,d,e,f;
-		Transition t1,t2,t3,t4,t5,t6,t7;
+		Alphabet a,b;
+		State s0,s1,s2,s3;
+		Transition t1,t2,t3,t4;
 		Automate automate;
 		
 		ArrayList<Alphabet> alphabets=new ArrayList<Alphabet>();
 		HashMap<String,State> states=new HashMap<String,State>();
 		
-		zero=new Alphabet('0', false);
-		un=new Alphabet('1', false);
+		a=new Alphabet('a', false);
+		b=new Alphabet('b', false);
 		
-		alphabets.add(zero);
-		alphabets.add(un);
+		alphabets.add(a);
+		alphabets.add(b);
 		
 		automate=new Automate(alphabets);
 		
-		a=new State("a", false, true);
-		b=new State("b", false, false);
-		c=new State("c", true, false);
-		d=new State("d", true, false);
-		e=new State("e", true, false);
-		f=new State("f", false, false);
+		s0=new State("0", false, true);
+		s1=new State("1", true, false);
+		s2=new State("2", false, false);
+		s3=new State("3", false, false);
 		
-		//transition de a
-		t1=new Transition(zero, b);
-		t2=new Transition(un, c);
-		//transition de b
-		t3=new Transition(zero, a);
-		t4=new Transition(un, d);
-		//transition de c
-		t5=new Transition(zero, e);
-		t6=new Transition(un, f);
-		//transition de f
-		t7=new Transition(zero, f);
+		//transition de 0
+		t1=new Transition(a, s1);
+		t2=new Transition(b, s3);
+		//transition de 1
+		t3=new Transition(b, s2);
+		t4=new Transition(a, s3);
 
 		try {
-			a.addTransition(t1);
-			a.addTransition(t2);
+			s0.addTransition(t1);
+			s0.addTransition(t2);
 			
-			b.addTransition(t3);
-			b.addTransition(t4);
+			s1.addTransition(t3);
+			s1.addTransition(t4);
 			
-			c.addTransition(t5);
-			c.addTransition(t6);
+			s2.addTransition(t1);
+			s2.addTransition(t2);
 			
-			d.addTransition(t5);
-			d.addTransition(t6);
-			
-			e.addTransition(t5);
-			e.addTransition(t6);
-
-			f.addTransition(t6);
-			f.addTransition(t7);
+			s3.addTransition(t4);
+			s3.addTransition(t2);
 		} catch (ExistedTransitionException exp) {
 			exp.printStackTrace();
 		}
-		states.put(a.getId_state(), a);
-		states.put(b.getId_state(), b);
-		states.put(c.getId_state(), c);
-		states.put(d.getId_state(), d);
-		states.put(e.getId_state(), e);
-		states.put(f.getId_state(), f);
+		states.put(s0.getId_state(), s0);
+		states.put(s1.getId_state(), s1);
+		states.put(s2.getId_state(), s2);
+		states.put(s3.getId_state(), s3);
 		
 		automate.setAutomate(states);
 		System.out.println(automate.transitionTableString());
 		
-		automate=automate.minimisation();
+		automate.minimisation();
 		System.out.println(automate.transitionTableString());
 	}
 }
