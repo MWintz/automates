@@ -9,6 +9,15 @@ public class TestTreeBuilding {
 		Tree tree = builder.buildTree();
 		ThompsonVisitor algo_thompson=new ThompsonVisitor();
 		tree.accept(algo_thompson);
-		System.out.println(algo_thompson.getThompsonAutomate().transitionTableString());
+		
+		Automate result_automate=algo_thompson.getThompsonAutomate();
+		System.out.println(result_automate.transitionTableString());
+		result_automate.synchronization();
+		System.out.println(result_automate.transitionTableString());
+		
+		System.out.println("this automate are "+result_automate.isDeterminist());
+		
+		String word="ababababababababababab";
+		System.out.println("the word :("+word+")-> has been "+result_automate.wordRecognition(word));
 	}
 }

@@ -19,7 +19,7 @@ public class Main {
 		c=new Alphabet('c', false);
 		epsilon=Alphabet.epsilon_alph;
 		
-		word="abc";
+		word="abcd";
 		
 		alphabets.add(a);
 		alphabets.add(b);

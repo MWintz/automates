@@ -106,10 +106,17 @@ public class Automate {
 					stop=true;
 				}
 				else {
-					target_state=current_state.targetState(current_symbol).get(0);
-					if(target_state != null) {
-						current_state=target_state;
-						word_index=word_index+1;
+					ArrayList<State>tar_array=current_state.targetState(current_symbol);
+					if(!tar_array.isEmpty()) {
+						target_state=tar_array.get(0);
+						if(target_state != null) {
+							current_state=target_state;
+							word_index=word_index+1;
+						}
+						else {
+							result=false;
+							stop=true;
+						}
 					}
 					else {
 						result=false;
