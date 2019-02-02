@@ -27,7 +27,7 @@ public class Alphabet implements Tree{
 
 	@Override
 	public String toString() {
-		return "Alphabet ("+value+")";
+		return ""+value+"";
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Stack;
 
+import expression.NodeFactory;
+import expression.Operation;
 import expression.Tree;
 
 /**
@@ -35,27 +37,79 @@ public class TreeBuilder {
 	}
 	
 	public Tree buildTree() {
-		Stack<Tree> stack = new Stack<Tree>();
-		String AlphabetBuffer = "";
-		
-		for (int index = 0; index < formula.length(); index++) {
+		Stack<Tree> stack_tree=new Stack<Tree>();
+		Stack<String> stack_str=new Stack<String>();
+		int index=0;
+		boolean erreur=false;
+		Tree alpha,left,right;
+		String oper;
+		while (index<formula.length() && !erreur){
 			// The current char in the formula to process
 			String currentChar = formula.substring(index, index + 1);
-			System.out.println(currentChar);
+			
+			if(!isParenthesisO(currentChar) && !isSeparator(currentChar)) {
+				if(isAlphabet(currentChar)) {
+					alpha=NodeFactory.creatAlphabet(currentChar.charAt(0));
+					stack_tree.push(alpha);
+				}
+				else {
+					if(isOperationBinary(currentChar))
+						stack_str.push(currentChar);
+					else {
+						if(isParenthesusF(currentChar)) {
+							oper=stack_str.pop();
+							if(isOperationBinary(oper)){
+								right=stack_tree.pop();
+								left=stack_tree.pop();
+								Operation node=NodeFactory.creatOperation(oper.charAt(0), left, right);
+								stack_tree.push(node);
+							}
+							else
+								erreur=true;
+						}
+						else if(isOperationUnary(currentChar)) {
+								left=stack_tree.pop();
+								Operation node=NodeFactory.creatOperation(currentChar.charAt(0), left, null);
+								stack_tree.push(node);
+								if(index<formula.length()-1) {
+									String next = formula.substring(index+1, index+2);
+										if(isParenthesusF(next) && next!=null)
+											index++;
+								}
+						}
+						else
+							erreur=true;
+					}
+				}
+			}
+				
+			index++;
 		}
 		// Return the root of the tree (the root IS the tree).
-		return stack.pop();
+		return stack_tree.pop();
 	}
 	
-	private boolean isParenthesis(String value) {
-		return value.equals("(") || value.equals(")");
+	private boolean isSeparator(String value) {
+		return value.equals(" ") || value.equals(",");
 	}
 	
-	private boolean isOperation(String value) {
-		return value.equals("*") || value.equals("+") || value.equals(".");
+	private boolean isParenthesisO(String value) {
+		return value.equals("(");
+	}
+	
+	private boolean isParenthesusF(String value) {
+		return value.equals(")");
+	}
+	
+	private boolean isOperationBinary(String value) {
+		return value.equals("+") || value.equals(".");
+	}
+	
+	private boolean isOperationUnary(String value) {
+		return value.equals("*");
 	}
 	
 	private boolean isAlphabet(String value) {
-		return !isOperation(value) && !isParenthesis(value);
+		return !isOperationUnary(value) && !isOperationBinary(value) && !isParenthesisO(value) && !isParenthesusF(value) && !isSeparator(value);
 	}
 }

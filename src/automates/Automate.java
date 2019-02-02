@@ -10,6 +10,7 @@ public class Automate {
 	
 	public Automate() {
 		alphabet=new ArrayList<Alphabet>();
+		alphabet.add(Alphabet.epsilon_alph);
 		automate=new HashMap<String,State>();
 		determinist = this.testDeterminist();
 	}
