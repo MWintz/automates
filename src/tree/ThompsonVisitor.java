@@ -13,15 +13,11 @@ import expression.Union;
  * @author ishakayad96@outlook.fr
  */
 
-public class ThompsonVisitor implements TreeVisitor<Void>{
-	private Automate thompson_automate=new  Automate();
-	private int nb_state=0;
-	String id_state;
-	private automates.Alphabet tran_alph,lef_alph,righ_alph;
+public class ThompsonVisitor implements TreeVisitor<Automate>{
+	private int nb_state=1;
+	private String id_state;
+	private automates.Alphabet tran_alph,alph_lef,alph_rig;
 	
-	public Automate getThompsonAutomate() {
-		return thompson_automate;
-	}
 	
 	private String get_idState() {
 		id_state="q"+nb_state;
@@ -30,95 +26,148 @@ public class ThompsonVisitor implements TreeVisitor<Void>{
 	}
 	
 	@Override
-	public Void visit(Alphabet node) {
+	public Automate visit(Alphabet node) {
 		tran_alph=new automates.Alphabet(node.getValue(), false);
-		thompson_automate.getAlphabet().add(tran_alph);
 		return null;
 	}
 
 	@Override
-	public Void visit(Etoile node) {
-		node.getLeftAlphabet().accept(this);
-		
+	public Automate visit(Etoile node) {
+		Automate left_automate=node.getLeftAlphabet().accept(this);
 		State si,sf,s1,s2;
-		Transition tran1,tran2;
-		try {
-			si=new State(get_idState(), false, true);
-			sf=new State(get_idState(), true, false);
-			if(thompson_automate.getAutomate().isEmpty()) {
-				s1=new State(get_idState(), false, false);
-				s2=new State(get_idState(), false, false);
-				
-				tran1=new Transition(s1);
-				tran2=new Transition(sf);
-				
-				si.addTransition(tran2);
-				si.addTransition(tran1);
-				s2.addTransition(tran2);
-				s2.addTransition(tran1);
-				Transition tran_spe=new Transition(tran_alph, s2);
+		Transition tran1,tran2,tran_spe;
+		try {	
+			if(left_automate==null) {
+					left_automate=new Automate();
+					left_automate.addAlphabet(tran_alph);
+					left_automate.addAlphabet(automates.Alphabet.epsilon_alph);
+					
+					si=new State(get_idState(), false, true);
+					s1=new State(get_idState(), false, false);
+					s2=new State(get_idState(), false, false);
+					sf=new State(get_idState(), true, false);
+					
+					tran1=new Transition(s1);
+					tran2=new Transition(sf);
+					tran_spe=new Transition(tran_alph, s2);
+					
+					si.addTransition(tran2);
+					si.addTransition(tran1);
+					s2.addTransition(tran2);
+					s2.addTransition(tran1);
 					s1.addTransition(tran_spe);
-			
-				thompson_automate.getAutomate().put(s1.getId_state(), s1);
-				thompson_automate.getAutomate().put(s2.getId_state(), s2);
-			}
-			else {
-				 s1=thompson_automate.getInitial_Final_State("initial").get(0);
-				 s2=thompson_automate.getInitial_Final_State("final").get(0);
-				 s1.setInitial(false);
-				 s2.setFinal(false);
-				 
-				 tran1=new Transition(s1);
-				 tran2=new Transition(sf);
-				 
-				 si.addTransition(tran2);
-				 si.addTransition(tran1);
-				 s2.addTransition(tran2);
-				 s2.addTransition(tran1);
-			}
-			thompson_automate.getAutomate().put(si.getId_state(), si);
-			thompson_automate.getAutomate().put(sf.getId_state(), sf);
+					
+					left_automate.getAutomate().put(si.getId_state(), si);
+					left_automate.getAutomate().put(s1.getId_state(), s1);
+					left_automate.getAutomate().put(s2.getId_state(), s2);
+					left_automate.getAutomate().put(sf.getId_state(), sf);
+				}
+				else {
+					si=new State(get_idState(), false, true);
+					sf=new State(get_idState(), true, false);
+					State state_final_left=left_automate.getInitial_Final_State("final").get(0);
+					State state_initial_left=left_automate.getInitial_Final_State("initial").get(0);
+					
+					state_final_left.setFinal(false);
+					state_initial_left.setInitial(false);
+					
+					tran1=new Transition(state_initial_left);
+					tran2=new Transition(sf);
+					
+					state_final_left.addTransition(tran1);
+					state_final_left.addTransition(tran2);
+					si.addTransition(tran1);
+					si.addTransition(tran2);
+					
+					left_automate.getAutomate().put(si.getId_state(), si);
+					left_automate.getAutomate().put(sf.getId_state(), sf);
+				}
 		} catch (ExistedTransitionException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return left_automate;
 	}
 
 	@Override
-	public Void visit(Union node) {
-		node.getLeftAlphabet().accept(this);
-		node.getRightAlphabet().accept(this);
-		return null;
-	}
-
-	@Override
-	public Void visit(Concatenation node) {
-		node.getLeftAlphabet().accept(this);
-		lef_alph=this.tran_alph;
-		node.getRightAlphabet().accept(this);
-		righ_alph=this.tran_alph;
+	public Automate visit(Union node) {
+		Automate left_automate=node.getLeftAlphabet().accept(this);
+		Automate right_automate=node.getRightAlphabet().accept(this);
 		
-		State si,sf,s1;
-		Transition tran1,tran2;
-		try {
-			si=new State(get_idState(), false, true);
-			sf=new State(get_idState(), true, false);
-			if(thompson_automate.getAutomate().isEmpty()) {
-				s1=new State(get_idState(), false, false);
+		return null;
+	}
+
+	@Override
+	public Automate visit(Concatenation node) {
+		Automate left_automate=node.getLeftAlphabet().accept(this);
+		if(left_automate==null) {
+			alph_lef=tran_alph;
+		}
+		Automate right_automate=node.getRightAlphabet().accept(this);
+		if(right_automate==null) {
+			alph_rig=tran_alph;
+		}
+		try {	
+			if(left_automate==null && right_automate==null) {
+				left_automate=new Automate();
+				left_automate.addAlphabet(alph_lef);
+				left_automate.addAlphabet(alph_rig);
 				
-				tran1=new Transition(lef_alph, s1);
-				tran2=new Transition(righ_alph, sf);
+				State si=new State(get_idState(), false, true);
+				State s1=new State(get_idState(), false, false);
+				State sf=new State(get_idState(), true, false);
+				
+				Transition tran1=new Transition(alph_lef, s1);
+				Transition tran2=new Transition(alph_rig, sf);
 				
 				si.addTransition(tran1);
 				s1.addTransition(tran2);
-			
-				thompson_automate.getAutomate().put(si.getId_state(), si);
-				thompson_automate.getAutomate().put(s1.getId_state(), s1);
-				thompson_automate.getAutomate().put(sf.getId_state(), sf);
+				left_automate.getAutomate().put(si.getId_state(), si);
+				left_automate.getAutomate().put(s1.getId_state(), s1);
+				left_automate.getAutomate().put(sf.getId_state(), sf);
 			}
-		} catch (ExistedTransitionException e) {
+			else if(left_automate!=null && right_automate==null) {
+				left_automate.addAlphabet(alph_rig);
+				State sf=left_automate.getInitial_Final_State("final").get(0);
+				State new_sf=new State(get_idState(), true, false);
+				
+				Transition tran1=new Transition(alph_rig, new_sf);
+				
+				sf.setFinal(false);
+				sf.addTransition(tran1);
+				left_automate.getAutomate().put(new_sf.getId_state(), new_sf);
+				
+			}
+			else if(left_automate==null && right_automate!=null) {
+				right_automate.addAlphabet(alph_lef);
+				State si=right_automate.getInitial_Final_State("initial").get(0);
+				State new_si=new State(get_idState(), false, true);
+				
+				Transition tran1=new Transition(alph_lef, si);
+				
+				si.setInitial(false);
+				new_si.addTransition(tran1);
+				right_automate.getAutomate().put(new_si.getId_state(), new_si);
+				left_automate=right_automate;
+			}
+			else {
+				State si=right_automate.getInitial_Final_State("initial").get(0);
+				
+				for(State state:left_automate.getAutomate().values()) {
+					if(state.isFinal()) {
+						state.setFinal(false);
+						state.setTransition(si.getTransition());
+					}
+				}
+				for(State state:right_automate.getAutomate().values()) {
+					if(!state.equals(si))
+						left_automate.getAutomate().put(state.getId_state(), state);
+				}
+				for(automates.Alphabet alpha:right_automate.getAlphabet())
+					left_automate.addAlphabet(alpha);
+			}
+		} catch(ExistedTransitionException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return left_automate;
 	}
 }
