@@ -1,5 +1,6 @@
 package tree;
 
+import automates.Automate;
 import expression.Tree;
 
 public class TestTreeBuilding {
