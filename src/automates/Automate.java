@@ -27,7 +27,17 @@ public class Automate {
 	}
 	
 	public void addAlphabet(Alphabet alpha) {
-		if(!this.alphabet.contains(alpha))
+		int i=0;
+		boolean find=false;
+		
+		while(i<alphabet.size() && ! find) {
+			Alphabet tmp_alpha=alphabet.get(i);
+			if(tmp_alpha.getValue()==alpha.getValue()){
+				find=true;
+			}
+			i++;
+		}
+		if(!find)
 			this.alphabet.add(alpha);
 	}
 
@@ -50,7 +60,7 @@ public class Automate {
 	/**
 	 * this function allow us to know if an automate is determinist or not
 	 */
-	private boolean testDeterminist() {
+	public boolean testDeterminist() {
 		boolean test=true;
 		
 		if(!this.automate.isEmpty()) {
@@ -194,6 +204,7 @@ public class Automate {
 		}
 		this.alphabet.remove(Alphabet.epsilon_alph);
 		setAutomate(new_automate);
+		this.determinist=testDeterminist();
 	}
 	
 	/**

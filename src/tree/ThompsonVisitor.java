@@ -1,5 +1,7 @@
 package tree;
 
+import java.util.Stack;
+
 import automates.Automate;
 import automates.ExistedTransitionException;
 import automates.State;
@@ -16,7 +18,8 @@ import expression.Union;
 public class ThompsonVisitor implements TreeVisitor<Automate>{
 	private int nb_state=1;
 	private String id_state;
-	private automates.Alphabet tran_alph,alph_lef,alph_rig;
+	private Stack<automates.Alphabet> alph_lef=new Stack<automates.Alphabet>();
+	private automates.Alphabet tran_alph,alph_rig;
 	
 	
 	private String get_idState() {
@@ -63,6 +66,7 @@ public class ThompsonVisitor implements TreeVisitor<Automate>{
 					left_automate.getAutomate().put(sf.getId_state(), sf);
 				}
 				else {
+					left_automate.addAlphabet(automates.Alphabet.epsilon_alph);
 					si=new State(get_idState(), false, true);
 					sf=new State(get_idState(), true, false);
 					State state_final_left=left_automate.getInitial_Final_State("final").get(0);
@@ -100,7 +104,7 @@ public class ThompsonVisitor implements TreeVisitor<Automate>{
 	public Automate visit(Concatenation node) {
 		Automate left_automate=node.getLeftAlphabet().accept(this);
 		if(left_automate==null) {
-			alph_lef=tran_alph;
+			alph_lef.push(tran_alph);
 		}
 		Automate right_automate=node.getRightAlphabet().accept(this);
 		if(right_automate==null) {
@@ -109,14 +113,15 @@ public class ThompsonVisitor implements TreeVisitor<Automate>{
 		try {	
 			if(left_automate==null && right_automate==null) {
 				left_automate=new Automate();
-				left_automate.addAlphabet(alph_lef);
+				automates.Alphabet alph=alph_lef.pop();
+				left_automate.addAlphabet(alph);
 				left_automate.addAlphabet(alph_rig);
 				
 				State si=new State(get_idState(), false, true);
 				State s1=new State(get_idState(), false, false);
 				State sf=new State(get_idState(), true, false);
 				
-				Transition tran1=new Transition(alph_lef, s1);
+				Transition tran1=new Transition(alph, s1);
 				Transition tran2=new Transition(alph_rig, sf);
 				
 				si.addTransition(tran1);
@@ -138,11 +143,12 @@ public class ThompsonVisitor implements TreeVisitor<Automate>{
 				
 			}
 			else if(left_automate==null && right_automate!=null) {
-				right_automate.addAlphabet(alph_lef);
+				automates.Alphabet alph=alph_lef.pop();
+				right_automate.addAlphabet(alph);
 				State si=right_automate.getInitial_Final_State("initial").get(0);
 				State new_si=new State(get_idState(), false, true);
 				
-				Transition tran1=new Transition(alph_lef, si);
+				Transition tran1=new Transition(alph, si);
 				
 				si.setInitial(false);
 				new_si.addTransition(tran1);
