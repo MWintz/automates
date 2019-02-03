@@ -29,7 +29,7 @@ public class Automate {
 	public void addAlphabet(Alphabet alpha) {
 		int i=0;
 		boolean find=false;
-		
+		System.out.println(alpha+"===>"+this.alphabet);
 		while(i<alphabet.size() && ! find) {
 			Alphabet tmp_alpha=alphabet.get(i);
 			if(tmp_alpha.getValue()==alpha.getValue()){
