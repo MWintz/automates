@@ -15,8 +15,9 @@ public class TestTreeBuilding {
 		System.out.println(result_automate.transitionTableString());
 		
 		System.out.println("this automate are "+result_automate.isDeterminist());
-		
-		String word="cdcdcdcdcdcdcdcdcdcdab";
+
+		//String word="if|a|then|bc";
+		String word="ababcabab";
 		System.out.println("the word :("+word+")-> has been "+result_automate.wordRecognition(word));
 	}
 }
