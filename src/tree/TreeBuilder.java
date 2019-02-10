@@ -36,6 +36,10 @@ public class TreeBuilder {
 		}
 	}
 	
+	public TreeBuilder() {
+		formula=null;
+	}
+	
 	public Tree buildTree() {
 		Stack<Tree> stack_tree=new Stack<Tree>();
 		Stack<String> stack_str=new Stack<String>();
@@ -111,5 +115,9 @@ public class TreeBuilder {
 	
 	private boolean isAlphabet(String value) {
 		return !isOperationUnary(value) && !isOperationBinary(value) && !isParenthesisO(value) && !isParenthesusF(value) && !isSeparator(value);
+	}
+	
+	public void setFormula(String formula) {
+		this.formula=formula;
 	}
 }

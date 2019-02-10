@@ -17,7 +17,7 @@ public class TestTreeBuilding {
 		System.out.println("this automate are "+result_automate.isDeterminist());
 
 		//String word="if|a|then|bc";
-		String word="abc";
+		String word="ab";
 		System.out.println("the word :("+word+")-> has been "+result_automate.wordRecognition(word));
 	}
 }
