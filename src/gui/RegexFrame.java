@@ -34,6 +34,7 @@ public class RegexFrame extends JFrame implements Runnable{
 		setResizable(false);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
+		contentPane.setForeground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -102,7 +103,7 @@ public class RegexFrame extends JFrame implements Runnable{
 				
 				String auto_res=result_automate.wordRecognition(textAreaTarS.getText());
 				
-				String resutl="the word :('"+textAreaTarS.getText()+"')-> has been "+auto_res;
+				String resutl="("+textAreaTarS.getText()+")-> "+auto_res;
 				
 				if(auto_res.equals("accepted"))
 					result.setForeground(Color.GREEN);
