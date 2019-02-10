@@ -53,8 +53,12 @@ public class RegexFrame extends JFrame implements Runnable{
 		textFieldExp.setColumns(10);
 		
 		textAreaTarS = new JTextArea();
-		textAreaTarS.setBounds(56, 97, 277, 64);
-		contentPane.add(textAreaTarS);
+		textAreaTarS.setRows(3);
+		textAreaTarS.setLineWrap(true);
+		JScrollPane sp = new JScrollPane(textAreaTarS);
+		sp.setBounds(56, 97, 277, 64);
+		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		contentPane.add(sp);
 		
 		result = new JLabel("");
 		result.setVerticalAlignment(SwingConstants.TOP);
