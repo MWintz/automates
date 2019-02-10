@@ -15,7 +15,7 @@ import java.awt.Color;
 
 public class RegexFrame extends JFrame implements Runnable{
 	
-	private static final int THREAD_MAP = 1000;
+	private static final int THREAD_MAP = 10;
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textFieldExp;

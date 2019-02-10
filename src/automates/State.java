@@ -128,7 +128,7 @@ public class State {
 	public boolean equals(State state) {
 		boolean equals;
 		
-		equals=this.transition.equals(state.transition) && this.isFinal==state.isFinal && this.isInitial==state.isInitial;
+		equals=this.id_state.equals(state.id_state) && this.transition.equals(state.transition) && this.isFinal==state.isFinal && this.isInitial==state.isInitial;
 
 		return equals;
 	}

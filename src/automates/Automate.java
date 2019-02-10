@@ -174,6 +174,7 @@ public class Automate {
 	public void synchronization() {
 		ArrayList<State> incomingEpsilonState=new ArrayList<State>();
 		HashMap<String,State> new_automate=new HashMap<String,State>();
+		ArrayList<String> deletedStates=new ArrayList<String>();
 		int number_tran=0;
 		boolean delet=false;
 		
@@ -182,13 +183,15 @@ public class Automate {
 			number_tran=incomingTransitions(states).size();
 			if(incomingEpsilonState!=null) {
 				for(State incomingState : incomingEpsilonState) {
-					incomingState.copyTransition(states);
-					incomingState.deletEpsilonTransition(states.getId_state());
-					if(states.isFinal())
-						incomingState.setFinal(true);
-					if(incomingState.isInitial()) {
-						states.setInitial(true);
-						delet=true;
+					if(!deletedStates.contains(incomingState.getId_state())) {
+						incomingState.copyTransition(states);
+						incomingState.deletEpsilonTransition(states.getId_state());
+						if(states.isFinal())
+							incomingState.setFinal(true);
+						if(incomingState.isInitial()) {
+							states.setInitial(true);
+							delet=true;
+						}
 					}
 				}
 			}
@@ -197,8 +200,10 @@ public class Automate {
 			else {
 				if(states.isInitial() && !delet)
 					new_automate.put(states.getId_state(), states);
-				else
+				else {
 					delet=false;
+					deletedStates.add(states.getId_state());
+				}
 			}
 		}
 		this.alphabet.remove(Alphabet.epsilon_alph);

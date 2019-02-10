@@ -12,12 +12,13 @@ public class TestTreeBuilding {
 		Automate result_automate=tree.accept(algo_thompson);;
 		System.out.println(result_automate.transitionTableString());
 		result_automate.synchronization();
+		
 		System.out.println(result_automate.transitionTableString());
 		
 		System.out.println("this automate are "+result_automate.isDeterminist());
 
 		//String word="if|a|then|bc";
-		String word="ab";
+		String word="bc";
 		System.out.println("the word :("+word+")-> has been "+result_automate.wordRecognition(word));
 	}
 }
