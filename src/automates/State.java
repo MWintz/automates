@@ -124,11 +124,31 @@ public class State {
 			this.transition.add(tran);
 		}
 	}
+
+	public boolean equalsTransition(State state) {
+		boolean equals=true;
+			for(Iterator<Transition>it=transition.iterator(); it.hasNext(); ) {
+				Transition tran=it.next();
+				State target=tran.getState();
+				
+				ArrayList<State> s_tran=state.targetState(tran.getLabel().getValue());
+				int i=0;
+				boolean stop=false;
+				while(i<s_tran.size() && !stop) {
+					State s=s_tran.get(i);
+					if(s.isFinal==target.isFinal && s.isInitial==target.isInitial)
+						stop=true;
+					i++;
+				}
+				equals=stop;
+			}
+		return equals;
+	}
 	
 	public boolean equals(State state) {
 		boolean equals;
 		
-		equals=this.id_state.equals(state.id_state) && this.transition.equals(state.transition) && this.isFinal==state.isFinal && this.isInitial==state.isInitial;
+		equals=this.equalsTransition(state) && this.isFinal==state.isFinal && this.isInitial==state.isInitial;
 
 		return equals;
 	}

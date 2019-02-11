@@ -341,29 +341,58 @@ public class Automate {
 		this.determinize();
 	}
 	/**
+	 * this function check if an alphabet are accepted by an automate represented by his alphabet
+	 * @param alphabet
+	 * @param alph
+	 * @return true if alphabet contains alph false in the other case
+	 */
+	public boolean containsAlphabet(ArrayList<Alphabet> alphabet, Alphabet alph) {
+		boolean contains=false;
+		int i=0;
+			while(!contains && i<alphabet.size()) {
+				if(alphabet.get(i).equals(alph))
+					contains=true;
+				i++;
+			}
+		return contains;
+	}
+	/**
+	 * this function allow us to know if the alphabet of two automates are the same
+	 * @param a automate
+	 * @return boolean true if this automate have the same alphabet with a false in other case
+	 */
+	public boolean equalsAlphabet(Automate a) {
+		ArrayList<Alphabet> a_alpha=a.getAlphabet();
+		boolean equalAlphabet=a_alpha.size()==alphabet.size();
+		int i=0;
+			while(equalAlphabet && i<alphabet.size()) {
+				Alphabet alph=alphabet.get(i);
+				if(!containsAlphabet(a_alpha, alph)) {
+					equalAlphabet=false;
+				}
+				i++;
+			}
+		return equalAlphabet;
+	}
+	/**
 	 * this function allow us to know if tow automates are equals
 	 * @param a
 	 * @return equals true if this automate is equals to a
 	 */
-	public String equals(Automate a,String with_id) {
-		boolean equals=true;
-		HashMap<String,State> automate_a=a.getAutomate();
-		
-		if(this.automate.size()==a.automate.size() && this.alphabet.size()==a.alphabet.size()) {
-			for(State states : this.automate.values())
-				if(!automate_a.containsValue(states)) {
-					equals=false;
+	public String equals(Automate a) {
+		boolean equals=equalsAlphabet(a);
+			if(equals) {
+				equals=a.getAutomate().size()==automate.size();
+				
+				for(State this_s:automate.values()) {
+					boolean check=false;
+					for(State a_s:a.getAutomate().values()) {
+						if(this_s.equals(a_s))
+							check=true;
+					}
+					equals=check;
 				}
-				else {
-					if(with_id.equals("YES"))
-						if(!automate_a.containsKey(states.getId_state())) {
-							equals=false;
-						}
-				}
-		}
-		else {
-			equals=false;
-		}
+			}
 		return equals ? "euqals" : "not equals";
 	}
 	/**
