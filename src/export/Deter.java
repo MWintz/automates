@@ -3,7 +3,6 @@ package export;
 import automates.Automate;
 
 public class Deter extends Question{
-
 	
 	public Deter(Automate auto) {
 		this.setQtype("Deter");
