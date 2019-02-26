@@ -22,20 +22,25 @@ public class HtmlExport {
 	private String name;
 	private File file;
 	private HashMap<Integer, Automate> list = new HashMap<Integer, Automate>();
-	private Question question;
+	private HashMap<Integer, ArrayList<Alphabet>> alphalist = new HashMap<Integer, ArrayList<Alphabet>>();
+	private String question;
 	
 	
 	/*Constructors*/
-	public HtmlExport(String name) {
+	public HtmlExport(String name) throws IOException {
 		this.name = name;
-		new File("/Cours/HTML/").mkdirs();
+		new File("/Cours/XML/").mkdirs();
 		this.file = new File("/Cours/XML/"+name+".xml");
+		this.file.delete();
+		this.file.createNewFile();
 	}	
 	
-	public HtmlExport(String name, Path path) {
+	public HtmlExport(String name, Path path) throws IOException {
 		this.name = name;
 		new File(path.toString()).mkdirs();
-		this.file = new File(path+name+".html");
+		this.file = new File(path+name+".xml");
+		this.file.delete();
+		this.file.createNewFile();
 	}
 
 	/*Getters and Setters*/
@@ -62,13 +67,17 @@ public class HtmlExport {
 	public void setList(HashMap<Integer, Automate> list) {
 		this.list = list;
 	}
+	
+	public void addList(Automate auto) {
+		this.list.put(this.list.size()+1,auto);
+	}
 
-	public Question getQuestion() {
+	public String getQuestion() {
 		return question;
 	}
 
-	public void setQuestion(Question question) {
-		this.question = question;
+	public void setQuestion(String string) {
+		this.question = string;
 	}
 
 	/*Methods*/
@@ -77,7 +86,7 @@ public class HtmlExport {
 	 * Rewrites the file otherwise*/
 	public void generateFile() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(this.file));
-		BufferedReader br = new BufferedReader(new FileReader("/Cours/XML/speciment.xml"));
+		BufferedReader br = new BufferedReader(new FileReader("specimen.xml"));
 		/*En tete*/
 		bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		bw.newLine();
@@ -87,7 +96,7 @@ public class HtmlExport {
 		bw.newLine();
 		bw.write("<category>");
 		bw.newLine();
-		bw.write("<text>$course$/"+question.getQtype()+"</text> <!-- Donne la categorie de la base de questions-->");
+		bw.write("<text>$course$/"+question+"</text> <!-- Donne la categorie de la base de questions-->");
 		bw.newLine();
 		bw.write("</category>");
 		bw.newLine();
@@ -95,17 +104,28 @@ public class HtmlExport {
 		bw.newLine();
 		
 		String fullquestion = "";
-		while (br.readLine() != null) {
-			fullquestion += br.readLine();
+		String line = br.readLine();
+		while (line != null) {
+			fullquestion += line+"\n";
+			line = br.readLine();
 		}
-		
+				
 		/*Corps*/
 		/*Pour chaque automate à placer dans le fichier*/
 		for(int i = 0; i < this.list.size() ; i++){
 			Automate auto = this.list.get(i);
-			fullquestion.replaceAll("#NUMBER#",""+i);
-			fullquestion.replace("#NAME#",question.getQtype()+" "+i);
-			fullquestion.replace("#QUESTION#", question.getQuestion());
+			Question quest;
+			switch(question) {
+			case "deter" : quest = new Deter();
+			//TODO find a way to modify the number of question without modifying the code
+			case "recognition" : quest = new Recognition(alphalist.get(i), 3);
+			case "determiniser" : quest = new Determiniser();
+			default : quest = new Deter();
+			}
+			ArrayList<Alphabet> alpha = this.alphalist.get(i);
+			fullquestion = fullquestion.replaceAll("#NUMBER#",""+i);
+			fullquestion = fullquestion.replace("#NAME#",question+" "+i);
+			fullquestion = fullquestion.replace("#QUESTION#", quest.getQuestion());
 			
 			/*On donne un titre au nouveau tableau*/
 			String tabletowrite = "";
@@ -113,84 +133,46 @@ public class HtmlExport {
 			int ns = i+1;
 			tabletowrite += "<CAPTION>Automate "+ns+"</CAPTION>\n";
 			tabletowrite += "<TR><TH></TH>\n";
-			ArrayList<Alphabet> alpha = auto.getAlphabet();
-			/*On trie l'alphabet dans l'ordre alphabetique*/
-			alpha.sort(new Comparator<Alphabet>(){
-
-				@Override
-				public int compare(Alphabet alphabet1, Alphabet alphabet2) {
-						String alpha1 = ""+alphabet1.getValue();
-						String alpha2 = ""+alphabet2.getValue();
-					return alpha1.compareTo(alpha2);
-				}
-				
-			});
-			/*On place chaque caractere de l'alphabet dans un titre de colonne*/
-			for (int j = 0; j < alpha.size(); j++) {
-				
-				tabletowrite += "<TH>"+alpha.get(j)+"</TH>\n";
-			}
-			/*On ferme la premiere ligne*/
-			tabletowrite += "</TR>\n";
+//			/*On trie l'alphabet dans l'ordre alphabetique*/
+//			alpha.sort(new Comparator<Alphabet>(){
+//
+//				@Override
+//				public int compare(Alphabet alphabet1, Alphabet alphabet2) {
+//						String alpha1 = ""+alphabet1.getValue();
+//						String alpha2 = ""+alphabet2.getValue();
+//					return alpha1.compareTo(alpha2);
+//				}
+//				
+//			});
+//			/*On place chaque caractere de l'alphabet dans un titre de colonne*/
+//			for (int j = 0; j < alpha.size(); j++) {
+//				
+//				tabletowrite += "<TH>"+alpha.get(j)+"</TH>\n";
+//			}
+//			/*On ferme la premiere ligne*/
+//			tabletowrite += "</TR>\n";
 			/*Pour chaque etat de l'automate*/
 			String[][] table = auto.transitionTable();
-			for (int j=1; j<auto.getAutomate().size()+1;j++) {
+			for (int j=0; j<auto.getAutomate().size();j++) {
 				tabletowrite += "<TR>\n";
-				for (int k=0; k<alpha.size()+1; k++) {
+				for (int k=0; k<table[j].length; k++) {
 					tabletowrite += "<TH>"+table[j][k]+"</TH>\n";
 					}
 				tabletowrite += "</TR>\n";
-				}
-/*			TENTATIVE RATEE AVEC UN COMPARATEUR
- 			for(int k = 0; k < auto.getAutomate().size(); k++) {
-
-				
-				Collection<State> setAuto = auto.getAutomate().values();
-				ArrayList<State> arlia = new ArrayList<State>(setAuto);
-				
-				arlia.sort(new Comparator<State>() {
-
-					@Override
-					public int compare(State state0, State state1) {
-						return state0.getId_state().compareTo(state1.getId_state());
-					}
-					
-				});
-				State stat = arlia.get(k);
-				bw.write("<TR><TH>"+stat.getId_state());
-				if(stat.isInitial()) {
-					bw.write(" init");
-				}
-				if (stat.isFinal()) {
-					bw.write(" final");
-				}
-				bw.write("</TH>");
-				for(int l = 0; l < alpha.size(); l++) {
-					HashSet<Transition> trans = stat.getTransition();
-					Alphabet testChar = alpha.get(0);
-					for (Alphabet al : alpha) {
-						bw.newLine();
-						bw.write("<TH>");
-						for (Transition tra : stat.getTransition()) {
-							if (tra.getLabel() == al) {
-								bw.write(tra.getState().getId_state()+ " ");
-							}
-						}
-						bw.write("</TH>");
-					}
-				bw.write("</TR>");
-				}
-*/			
+				}			
 			tabletowrite += "</TABLE>\n";
-			fullquestion.replace("#CONTENT#", tabletowrite);
-			fullquestion.replace("#REMINDER#", question.getReminder());
-			fullquestion.replace("#ANSWER#", question.getAnswer());
-			fullquestion.replace("#FEEDBACK#", question.getFeedback());
-			fullquestion.replace("#PENALTY#", ""+question.getPenalty());
-			fullquestion.replace("#HIDDEN#", ""+question.getHidden());
+			fullquestion = fullquestion.replace("#CONTENT#", tabletowrite);
+			fullquestion = fullquestion.replace("#REMINDER#", quest.getReminder());
+			fullquestion = fullquestion.replace("#ANSWER#", quest.getAnswer());
+			fullquestion = fullquestion.replace("#FEEDBACK#", quest.getFeedback());
+			fullquestion = fullquestion.replace("#PENALTY#", ""+quest.getPenalty());
+			fullquestion = fullquestion.replace("#HIDDEN#", ""+quest.getHidden());
+			
+			bw.write(fullquestion);
 		}
 		
-		
+		bw.close();
+		br.close();
 	
 
 	}
@@ -208,5 +190,13 @@ public class HtmlExport {
         
         Desktop desktop = Desktop.getDesktop();
         if(file.exists()) desktop.open(this.file);
+	}
+
+	public HashMap<Integer, ArrayList<Alphabet>> getAlphalist() {
+		return alphalist;
+	}
+
+	public void setAlphalist(HashMap<Integer, ArrayList<Alphabet>> alphalist) {
+		this.alphalist = alphalist;
 	}
 }

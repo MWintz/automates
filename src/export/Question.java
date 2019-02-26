@@ -1,5 +1,10 @@
 package export;
 
+import java.util.ArrayList;
+
+import automates.Alphabet;
+import automates.Automate;
+
 public abstract class Question {
 	private String qtype;
 	private String question;
@@ -9,7 +14,9 @@ public abstract class Question {
 	private String feedback;
 	private double penalty;
 	private int hidden;
-	
+	private Automate auto = new Automate();
+	private ArrayList<Alphabet> alpha = new ArrayList<Alphabet>();
+
 	public Question() {
 	}
 
@@ -76,5 +83,20 @@ public abstract class Question {
 	public void setHidden(int hidden) {
 		this.hidden = hidden;
 	}
+
+	public Automate getAuto() {
+		return auto;
+	}
+
+	public void setAuto(Automate auto) {
+		this.auto = auto;
+	}
 	
+	public ArrayList<Alphabet> getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(ArrayList<Alphabet> alpha) {
+		this.alpha = alpha;
+	}
 }

@@ -1,0 +1,23 @@
+<!-- question: #NUMBER#  -->
+
+  <question type="cloze">
+    <name><text>
+#NAME#</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[#QUESTION#<br> 
+ <H4>  #CONTENT# </H4> 
+<br><br>
+
+ #REMINDER# <!--Pour donner des instructions quant au format de la reponse-->
+
+ <br><br>
+#ANSWER#
+]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text>#FEEDBACK#</text>
+    </generalfeedback>
+    <penalty>#PENALTY#</penalty> <!-- 0.3333333 sur le doc originel -->
+    <hidden>#HIDDEN#</hidden> <!-- 0 sur le doc originel -->
+  </question><!-- question: #NUMBER# -->
