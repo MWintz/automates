@@ -2,6 +2,8 @@ package automates;
 
 import java.util.ArrayList;
 
+import Random.Random;
+
 public class AutomateRepository {
 	
 	private static Alphabet A=new Alphabet('a', false);
@@ -30,19 +32,19 @@ public class AutomateRepository {
 			while(alphabet.size()<nbAlphabet) {
 				switch (type) {
 					case "BINARY":
-						index=randomInt1(2);
+						index=Random.randomInt1(2);
 						alph=alphaBinary[index];
 						if(!alphabet.contains(alph))
 							alphabet.add(alph);
 					break;
 					case "INFO":
-						index=randomInt1(5);
+						index=Random.randomInt1(5);
 						alph=alphaInfo[index];
 						if(!alphabet.contains(alph))
 							alphabet.add(alph);
 					break;
 					default:
-						index=randomInt1(5);
+						index=Random.randomInt1(5);
 						alph=alphaChar[index];
 						if(!alphabet.contains(alph))
 							alphabet.add(alph);
@@ -50,42 +52,5 @@ public class AutomateRepository {
 				}
 			}
 		return alphabet;
-	}
-	
-	public static Transition randomTransition(Automate automate, boolean Etrans) {
-		Transition tran;
-		String id_target="q"+randomInt(1, automate.getAutomate().size());
-		State target=automate.getAutomate().get(id_target);
-		
-		if(Etrans)
-			tran=new Transition(target);
-		else {
-			Alphabet alpha=automate.getAlphabet().get(randomInt1(automate.getAlphabet().size()));
-			tran=new Transition(alpha, target);
-		}
-		return tran;
-	}
-	
-	public static int randomInt( int min ,int max) {	
-		return (int)( Math.random()*( max - min + 1 ) ) + min;
-	}
-	
-	public static int randomInt1(int max) {
-		return (int)(Math.random() * max);
-	}
-	
-	public static int randomInt(int max, boolean included) {
-		if(included)
-			return (int)(Math.random() * (max + 1));
-		else
-			return (int)(Math.random() * max);
-	}
-	
-	public static boolean randomBool() {
-		return (Math.random()<0.5);
-	}
-	
-	public static boolean randomBool(int n) {
-		return (Math.random()<(float)n/10);
 	}
 }

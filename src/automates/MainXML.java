@@ -1,13 +1,10 @@
 package automates;
 
-import export.HtmlExport;
-import export.Recognition;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import automates.AutomateFactory;
+import export.HtmlExport;
 
 public class MainXML {
 	static ArrayList<Alphabet> alpha;
@@ -37,6 +34,5 @@ public class MainXML {
 
 	public static void setAlpha(ArrayList<Alphabet> arrayList) {
 		alpha = arrayList;
-	}
-	
+	}	
 }

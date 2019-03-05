@@ -9,14 +9,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+
 import automates.Alphabet;
 import automates.Automate;
-import automates.State;
-import automates.Transition;
 
 public class HtmlExport {
 	private String name;
@@ -111,7 +107,7 @@ public class HtmlExport {
 		}
 				
 		/*Corps*/
-		/*Pour chaque automate à placer dans le fichier*/
+		/*Pour chaque automate ï¿½ placer dans le fichier*/
 		for(int i = 0; i < this.list.size() ; i++){
 			Automate auto = this.list.get(i);
 			Question quest;
@@ -122,7 +118,6 @@ public class HtmlExport {
 			case "determiniser" : quest = new Determiniser();
 			default : quest = new Deter();
 			}
-			ArrayList<Alphabet> alpha = this.alphalist.get(i);
 			fullquestion = fullquestion.replaceAll("#NUMBER#",""+i);
 			fullquestion = fullquestion.replace("#NAME#",question+" "+i);
 			fullquestion = fullquestion.replace("#QUESTION#", quest.getQuestion());

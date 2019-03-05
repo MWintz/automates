@@ -1,14 +1,12 @@
 package export;
 
-import automates.Automate;
-
 public class Determiniser extends Question {
 	
 	public Determiniser() {
 		this.setQtype("Determiniser");
 		this.setShortanswer(false);
-		this.setQuestion("Inscrire dans le tableau les transitions entre les états de l'this.getAuto()mate déterminisé");
-		this.setReminder("Tous les caractères sont en minuscules, on inscrira x dans les cases qui ne contiennent pas de transition");
+		this.setQuestion("Inscrire dans le tableau les transitions entre les ï¿½tats de l'this.getAuto()mate dï¿½terminisï¿½");
+		this.setReminder("Tous les caractï¿½res sont en minuscules, on inscrira x dans les cases qui ne contiennent pas de transition");
 		String answer = " <br><br><table BORDER=\"1\">\n";
 		//TODO Work on the answer
 		this.getAuto().determinize();

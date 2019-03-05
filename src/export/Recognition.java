@@ -2,8 +2,8 @@ package export;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+
 import automates.Alphabet;
-import automates.Automate;
 
 public class Recognition extends Question{
 	
@@ -11,8 +11,8 @@ public class Recognition extends Question{
 		this.setQtype("Recognition");
 		this.setAlpha(alphabet);
 		this.setShortanswer(false);
-		this.setQuestion("Les mots suivants sont-ils reconnus par l'automate donné ?");
-		this.setReminder("On pourra écrire Vrai, 1, ou True pour Vrai, Faux, 0 ou False pour Faux (attention aux majuscules)");
+		this.setQuestion("Les mots suivants sont-ils reconnus par l'automate donne ?");
+		this.setReminder("On pourra ecrire Vrai, 1, ou True pour Vrai, Faux, 0 ou False pour Faux (attention aux majuscules)");
 		String answer = " <br><br><table BORDER=\"1\">\n";
 		for (int i = 0; i < num; i++) {
 			//TODO Find a way to modify the size of the word without modifying the code
@@ -37,8 +37,6 @@ public class Recognition extends Question{
 	public String generateRandomWord(int size) {
 		String word = "";
 		ArrayList<Alphabet> alpha = this.getAlpha();
-//		alpha.addAll(this.getAuto().getAlphabet());
-//		alpha.add(Alphabet.epsilon_alph);
 		for (int i = 0; i < size; i++) {
 			int rand = ThreadLocalRandom.current().nextInt(0, alpha.size()+1); 
 			for (int j = 0; j < alpha.size(); j++) {
@@ -47,8 +45,6 @@ public class Recognition extends Question{
 				}
 			}
 		}
-		System.out.println(size);
-		System.out.println(word);
 		return word;
 	}
 }
