@@ -168,6 +168,36 @@ public class Automate {
 		}	
 		return incoming_state;
 	}
+	
+	public void completion() {
+		State puitsState = null;
+		boolean foundPuitsState = false;
+		for(State state : automate.values()) {
+			if(state.isPuitsState(alphabet)) {
+				puitsState = state;
+				foundPuitsState = true;
+				break;
+			}
+		}
+		
+		if(!foundPuitsState) {
+			puitsState = new State("()", false, false);
+			for(Alphabet alph : alphabet) {
+				Transition tran = new Transition(alph, puitsState);
+				try {
+					puitsState.addTransition(tran);
+				} catch (ExistedTransitionException e) {
+					e.printStackTrace();
+				}
+			}
+			automate.put(puitsState.getId_state(), puitsState);
+		}
+		
+		for(State state : automate.values())
+			if(!state.equals(puitsState))
+				state.complete(puitsState, alphabet);
+	}
+	
 	/**
 	 * this function is used to synchronize a PLC "remove epsilon transition"
 	 */

@@ -125,6 +125,35 @@ public class State {
 		}
 	}
 
+	public boolean isPuitsState(ArrayList<Alphabet> alphabet) {
+		boolean isPuits = true;
+			if(transition.size() == alphabet.size()) {
+				for(Alphabet alpha : alphabet) {
+					if(!existTransition(alpha, this)) {
+						isPuits = false;
+						break;
+					}
+				}
+			}
+			else
+				isPuits = false;
+		return isPuits;
+	}
+	
+	public void complete(State puitsState, ArrayList<Alphabet> alphabet) {
+		for(Alphabet alph : alphabet) {
+			ArrayList<State> target = targetState(alph.getValue());
+			if(target.isEmpty()) {
+				Transition tran = new Transition(alph, puitsState);
+				try {
+					addTransition(tran);
+				} catch (ExistedTransitionException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	public boolean equalsTransition(State state) {
 		boolean equals=true;
 			for(Iterator<Transition>it=transition.iterator(); it.hasNext(); ) {
