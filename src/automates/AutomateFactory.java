@@ -101,12 +101,16 @@ public class AutomateFactory {
 		switch(type) {
 			case "ADeterminist":
 				auto_rand=randomADeterminist(nb_state, nbAlphabet, typeAlphabet);
+				break;
 			case "Asynchrone":
 				auto_rand=randomASynchrone(nb_state, nbAlphabet, typeAlphabet);
+				break;
 			case"Aminimal":
 				auto_rand=randomAMinimal(nb_state, nbAlphabet, typeAlphabet);
+				break;
 			default:
 				auto_rand=randomDefault(nb_state, nbAlphabet, typeAlphabet);
+				break;
 		}
 		return auto_rand;
 	}

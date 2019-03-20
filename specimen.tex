@@ -1,0 +1,34 @@
+\documentclass[a4paper]{article}
+
+\usepackage{a4wide}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{xspace}
+\usepackage{xspace,amssymb,pstricks,pst-node}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning,automata,shadows}
+
+\newcounter{cexo}
+\newcommand{\debexo}[1][]{\refstepcounter{cexo} \medskip
+  \noindent{\bf Exercice \arabic{cexo} : #1}}
+\newcommand{\finexo}{\medskip}
+\newenvironment{exo}{\debexo}{\finexo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\begin{exo}[Automates]
+\begin{enumerate}
+\item Synchronisez l'automate suivant.
+
+\vspace{1cm}
+  |-Asynchrone:2:2:DEFAULT
+
+\vspace{1cm}
+\item Déterminisez l'automate suivant.
+
+\vspace{1cm}
+  |-ADeterminist:3:2:DEFAULT
+\end{enumerate}
+\end{exo}
+\end{document}

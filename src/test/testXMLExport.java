@@ -7,14 +7,14 @@ import java.util.HashMap;
 import automates.Alphabet;
 import automates.Automate;
 import automates.AutomateFactory;
-import export.HtmlExport;
+import export.XmlExport;
 
 public class testXMLExport {
 	static ArrayList<Alphabet> alpha;
 	
 	public static void main(String[] args) throws IOException {
 		
-		HtmlExport exp = new HtmlExport("test");
+		XmlExport exp = new XmlExport("test");
 		HashMap<Integer, Automate> liste = new HashMap<Integer, Automate>();
 		HashMap<Integer, ArrayList<Alphabet>> alphalist = new HashMap<Integer, ArrayList<Alphabet>>();
 		for (int i=0; i<10;i++) {

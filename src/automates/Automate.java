@@ -169,6 +169,18 @@ public class Automate {
 		return incoming_state;
 	}
 	
+	public State getMaxIncomingTransitionState() {
+		State maxS = null;
+		int maxT = 0;
+			for(State state : this.automate.values()) {
+				if(incomingTransitions(state).size() > maxT) {
+					maxT = incomingTransitions(state).size();
+					maxS = state;
+				}
+			}
+		return maxS;
+	}
+	
 	public void completion() {
 		State puitsState = null;
 		boolean foundPuitsState = false;

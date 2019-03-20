@@ -14,7 +14,7 @@ import java.util.HashMap;
 import automates.Alphabet;
 import automates.Automate;
 
-public class HtmlExport {
+public class XmlExport {
 	private String name;
 	private File file;
 	private HashMap<Integer, Automate> list = new HashMap<Integer, Automate>();
@@ -23,7 +23,7 @@ public class HtmlExport {
 	
 	
 	/*Constructors*/
-	public HtmlExport(String name) throws IOException {
+	public XmlExport(String name) throws IOException {
 		this.name = name;
 		new File("/Cours/XML/").mkdirs();
 		this.file = new File("/Cours/XML/"+name+".xml");
@@ -31,7 +31,7 @@ public class HtmlExport {
 		this.file.createNewFile();
 	}	
 	
-	public HtmlExport(String name, Path path) throws IOException {
+	public XmlExport(String name, Path path) throws IOException {
 		this.name = name;
 		new File(path.toString()).mkdirs();
 		this.file = new File(path+name+".xml");
@@ -128,25 +128,7 @@ public class HtmlExport {
 			int ns = i+1;
 			tabletowrite += "<CAPTION>Automate "+ns+"</CAPTION>\n";
 			tabletowrite += "<TR><TH></TH>\n";
-//			/*On trie l'alphabet dans l'ordre alphabetique*/
-//			alpha.sort(new Comparator<Alphabet>(){
-//
-//				@Override
-//				public int compare(Alphabet alphabet1, Alphabet alphabet2) {
-//						String alpha1 = ""+alphabet1.getValue();
-//						String alpha2 = ""+alphabet2.getValue();
-//					return alpha1.compareTo(alpha2);
-//				}
-//				
-//			});
-//			/*On place chaque caractere de l'alphabet dans un titre de colonne*/
-//			for (int j = 0; j < alpha.size(); j++) {
-//				
-//				tabletowrite += "<TH>"+alpha.get(j)+"</TH>\n";
-//			}
-//			/*On ferme la premiere ligne*/
-//			tabletowrite += "</TR>\n";
-			/*Pour chaque etat de l'automate*/
+
 			String[][] table = auto.transitionTable();
 			for (int j=0; j<auto.getAutomate().size();j++) {
 				tabletowrite += "<TR>\n";
