@@ -23,10 +23,9 @@ public class XmlExport {
 	
 	
 	/*Constructors*/
-	public XmlExport(String name) throws IOException {
+	public XmlExport(String name, String path) throws IOException {
 		this.name = name;
-		new File("/Cours/XML/").mkdirs();
-		this.file = new File("/Cours/XML/"+name+".xml");
+		this.file = new File(path+name+".xml");
 		this.file.delete();
 		this.file.createNewFile();
 	}	

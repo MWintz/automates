@@ -2,18 +2,22 @@ package automates;
 
 import java.util.*;
 
+import turing.TuringTransition;
+
 public class State {
 
 	private String id_state;
 	private boolean isFinal;
 	private boolean isInitial;
 	protected HashSet<Transition> transition;
+	protected HashSet<TuringTransition> turing_transition;
 	
 	public State() {
 		this.id_state = "";
 		this.isFinal = false;
 		this.isInitial = false;
 		this.transition = new HashSet<Transition>();
+		this.turing_transition = new HashSet<TuringTransition>();
 	}
 	
 	public State(String id_sate, boolean isFinal, boolean isInitial) {
@@ -21,6 +25,7 @@ public class State {
 		this.isFinal=isFinal;
 		this.isInitial=isInitial;
 		transition=new HashSet<Transition>();
+		this.turing_transition = new HashSet<TuringTransition>();
 	}
 
 	public String getId_state() {
@@ -55,9 +60,26 @@ public class State {
 		this.transition = transition;
 	}
 	
+	public HashSet<TuringTransition> getTuring_transition() {
+		return turing_transition;
+	}
+	
+	public void setTuring_transition(HashSet<TuringTransition> turing_transition) {
+		this.turing_transition = turing_transition;
+	}
+	
 	public void addTransition(Transition transition) throws ExistedTransitionException {
 		if(!this.transition.contains(transition)) {
 			this.transition.add(transition);
+		}
+		else {
+			throw new ExistedTransitionException("La transistion : "+transition+" existe déjà dans l'état ("+id_state+")");
+		}
+	}
+	
+	public void addTuringTransition(TuringTransition transition) throws ExistedTransitionException {
+		if(!this.turing_transition.contains(transition)) {
+			this.turing_transition.add(transition);
 		}
 		else {
 			throw new ExistedTransitionException("La transistion : "+transition+" existe déjà dans l'état ("+id_state+")");

@@ -9,7 +9,7 @@ import automates.State;
 import automates.Transition;
 import automates.Alphabet;
 
-public class testDeterminize {
+public class TestDeterminize {
 	public static void main(String[] args) {
 		Alphabet a,b;
 		State s0,s1,s2,s3,s4;

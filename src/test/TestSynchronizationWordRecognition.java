@@ -9,7 +9,7 @@ import automates.ExistedTransitionException;
 import automates.State;
 import automates.Transition;
 
-public class testSynchronizationWordRecognition {
+public class TestSynchronizationWordRecognition {
 
 	public static void main(String[] args) {
 		Alphabet a,b,c,epsilon;

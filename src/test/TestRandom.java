@@ -3,7 +3,7 @@ package test;
 import automates.Automate;
 import automates.AutomateFactory;
 
-public class testRandom {
+public class TestRandom {
 	public static void main(String[] args) {
 		Automate random_automate;
 		

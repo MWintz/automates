@@ -12,8 +12,8 @@ public class AutomateRepository {
 	private static Alphabet D=new Alphabet('d', false);
 	private static Alphabet E=new Alphabet('e', false);
 	
-	private static Alphabet ZERO=new Alphabet('0', false);
-	private static Alphabet UN=new Alphabet('1', false);
+	public static Alphabet ZERO=new Alphabet('0', false);
+	public static Alphabet UN=new Alphabet('1', false);
 	
 	private static Alphabet ACOO=new Alphabet('{', false);
 	private static Alphabet ACOF=new Alphabet('}', false);

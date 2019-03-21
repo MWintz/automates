@@ -9,7 +9,7 @@ import automates.ExistedTransitionException;
 import automates.State;
 import automates.Transition;
 
-public class testMinimisationCompletion {
+public class TestMinimisationCompletion {
 	public static void main(String[] args) {
 		Alphabet a,b;
 		State s0,s1,s2,s3;
