@@ -1,5 +1,7 @@
 package automates;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -145,5 +147,82 @@ public class AutomateFactory {
 				}
 			}
 		return states;
+	}
+	
+	public static Automate creatAutomateByFile(String fileName) {
+		Automate automate = new Automate();
+		try {
+			@SuppressWarnings("resource")
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if(line.startsWith("A")) {
+					String alphabet[] = line.substring(2).split(",");
+					Alphabet alph;
+					for(int i = 0; i < alphabet.length; i++) {
+						if(alphabet[i].contains(".")) {
+							alph = new Alphabet(alphabet[i].substring(0,1).charAt(0), true);
+							automate.getAlphabet().add(alph);
+						}
+						else {
+							alph = new Alphabet(alphabet[i].charAt(0), false);
+							automate.getAlphabet().add(alph);
+						}
+					}
+				}
+				else if(line.startsWith("S")) {
+					String state[] = line.substring(2).split(",");
+					State s;
+					for(int i = 0; i < state.length; i++) {
+						s = new State(state[i], false, false);
+						automate.getAutomate().put(s.getId_state(), s);
+					}
+				}
+				else if(line.startsWith("I")) {
+					String Initial[] = line.substring(2).split(",");
+					for(int i = 0; i < Initial.length; i++)
+						automate.getAutomate().get(Initial[i]).setInitial(true);
+				}
+				else if(line.startsWith("F")) {
+					String Final[] = line.substring(2).split(",");
+					for(int i = 0; i < Final.length; i++)
+						automate.getAutomate().get(Final[i]).setFinal(true);
+				}
+				else if(line.startsWith("G={")) {
+					String line2;
+					while((line2 = reader.readLine()) != null && !line2.contains("}")) {
+						String str1[] = line2.split(":");
+						State s = automate.getAutomate().get(str1[0]);
+						if(str1.length > 1) {
+							String str2[] = str1[1].split(",");
+							if(str2.length > 0) {
+								Transition tran;
+								Alphabet alph_tran;
+								State target;
+								for(int i = 0; i < str2.length; i++) {
+									String str3[] = str2[i].split("-");
+									if(str3[0].contains(".")) {
+										alph_tran = automate.getAlphabetByChar(str3[0].substring(0,1).charAt(0));
+										target = automate.getAutomate().get(str3[1]);
+										tran = new Transition(alph_tran, target);
+										s.addTransition(tran);
+									}
+									else {
+										alph_tran = automate.getAlphabetByChar(str3[0].charAt(0));
+										target = automate.getAutomate().get(str3[1]);
+										tran = new Transition(alph_tran, target);
+										s.addTransition(tran);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return automate;
 	}
 }

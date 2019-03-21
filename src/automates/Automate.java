@@ -181,6 +181,17 @@ public class Automate {
 		return maxS;
 	}
 	
+	public Alphabet getAlphabetByChar(char value) {
+		Alphabet alph_res = null;
+		for(Alphabet alph : this.alphabet) {
+			if(alph.getValue() == value) {
+				alph_res = alph;
+				break;
+			}
+		}
+		return alph_res;
+	}
+	
 	public void completion() {
 		State puitsState = null;
 		boolean foundPuitsState = false;
