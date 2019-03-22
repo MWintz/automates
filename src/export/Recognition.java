@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import automates.Alphabet;
+import automates.Automate;
 
 public class Recognition extends Question{
 	
-	public Recognition(ArrayList<Alphabet> alphabet, int num) {
+	public Recognition(Automate auto, ArrayList<Alphabet> alphabet, int num) {
+		this.setAuto(auto);
 		this.setQtype("Recognition");
 		this.setAlpha(alphabet);
 		this.setShortanswer(false);
