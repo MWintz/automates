@@ -44,6 +44,7 @@ public class TexExport {
 					String data[] = line.split(":");
 					automate = AutomateFactory.randomAutomate(Integer.parseInt(data[1]), 
 							Integer.parseInt(data[2]), data[3], data[0]);
+					System.out.println(automate.transitionTableString());
 					String automateTex = automateFormatTex(automate);
 					write.write(automateTex);
 				}

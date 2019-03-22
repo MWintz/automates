@@ -13,12 +13,20 @@ public class TuringMachin {
 	private int nbChar;
 	private Automate turing_automate;
 	private String type_turing_machin;
+	private State s_turing;
+	private int index = (TABLE_SIZE / 2) - 1;
+	
+	public TuringMachin() {
+		this.nbChar = 0;
+		this.table = new char[TABLE_SIZE];
+	}
 	
 	public TuringMachin(String type_turing_machin) {
 		this.type_turing_machin = type_turing_machin;
 		this.nbChar = 0;
 		this.table = new char[TABLE_SIZE];
 		creatTuringMachin(type_turing_machin);
+		s_turing = turing_automate.getInitial_Final_State("initial").get(0);
 	}
 	
 	public void creatTuringMachin(String type_turing_machine) {
@@ -81,28 +89,33 @@ public class TuringMachin {
 	}
 	
 	public void turing_eval() {
-		int index = (TABLE_SIZE / 2) - 1;
-		State s = turing_automate.getInitial_Final_State("initial").get(0);
-		int move = 0;
-		Alphabet write = null;
+		index = (TABLE_SIZE / 2) - 1;
 		boolean end = false;
 		
-		while(!end) {
-			for(TuringTransition ttran : s.getTuring_transition()) {
-				if(ttran.getLabel().getValue() == table[index]) {
-					write = ttran.getWrite();
-					debug_table(index, write.getValue());
-					move = ttran.getMove();
-					s = ttran.getState();
-					break;
-				}
+		while(!end)
+			end = turing_proces();
+	}
+	
+	public boolean turing_proces() {
+		boolean end = false;
+		Alphabet write = null;
+		int move = 0;
+		for(TuringTransition ttran : s_turing.getTuring_transition()) {
+			if(ttran.getLabel().getValue() == table[index]) {
+				write = ttran.getWrite();
+				debug_table(index, write.getValue());
+				move = ttran.getMove();
+				s_turing = ttran.getState();
+				break;
 			}
-			
-			table[index] = write.getValue();
-			if(s.isFinal())
-				end = true;
-			index = index + move;
 		}
+		
+		table[index] = write.getValue();
+		if(s_turing.isFinal())
+			end = true;
+		index = index + move;
+		
+		return end;
 	}
 	
 	public String turing(String binary_value) {
@@ -147,5 +160,13 @@ public class TuringMachin {
 	
 	public void setType_turing_machin(String type_turing_machin) {
 		this.type_turing_machin = type_turing_machin;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }
