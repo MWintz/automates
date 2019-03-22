@@ -1,12 +1,15 @@
 package export;
 
+import automates.Automate;
+
 public class Determiniser extends Question {
 	
-	public Determiniser() {
+	public Determiniser(Automate auto) {
+		this.setAuto(auto);
 		this.setQtype("Determiniser");
 		this.setShortanswer(false);
-		this.setQuestion("Inscrire dans le tableau les transitions entre les �tats de l'this.getAuto()mate d�terminis�");
-		this.setReminder("Tous les caract�res sont en minuscules, on inscrira x dans les cases qui ne contiennent pas de transition");
+		this.setQuestion("Inscrire dans le tableau les transitions entre les etats de l'automate determinise");
+		this.setReminder("Tous les caracteres sont en minuscules, on inscrira x dans les cases qui ne contiennent pas de transition");
 		String answer = " <br><br><table BORDER=\"1\">\n";
 		//TODO Work on the answer
 		this.getAuto().determinize();
@@ -16,7 +19,7 @@ public class Determiniser extends Question {
 		}
 		answer += "</TR>\n";
 		String[][] table = this.getAuto().transitionTable();
-
+		System.out.println(table);
 		for (int j=1; j<this.getAuto().getAutomate().size()+1;j++) {
 			answer += "<TR><TD>"+table[j][0]+"</TD>\n";
 			for (int k=1; k<this.getAuto().getAlphabet().size()+1; k++) {
@@ -28,6 +31,7 @@ public class Determiniser extends Question {
 				}
 			}
 			answer += "</TR>\n";
+			System.out.println("ok");
 		}
 		
 		/*Analyser l'automate determinise pour pouvoir creer les regles sur chaque case du tableau*/

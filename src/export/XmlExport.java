@@ -104,18 +104,19 @@ public class XmlExport {
 			fullquestion += line+"\n";
 			line = br.readLine();
 		}
-				
+		String typeFullQuestion = fullquestion;		
 		/*Corps*/
 		/*Pour chaque automate � placer dans le fichier*/
 		for(int i = 0; i < this.list.size() ; i++){
+			fullquestion = typeFullQuestion;
 			Automate auto = this.list.get(i);
 			Question quest;
 			switch(question) {
-			case "deter" : quest = new Deter();
+			case "deter" : quest = new Deter(auto);
 			//TODO find a way to modify the number of question without modifying the code
-			case "recognition" : quest = new Recognition(alphalist.get(i), 3);
-			case "determiniser" : quest = new Determiniser();
-			default : quest = new Deter();
+			case "recognition" : quest = new Recognition(auto, alphalist.get(i), 3);
+			case "determiniser" : quest = new Determiniser(auto);
+			default : quest = new Deter(auto);
 			}
 			fullquestion = fullquestion.replaceAll("#NUMBER#",""+i);
 			fullquestion = fullquestion.replace("#NAME#",question+" "+i);
@@ -126,10 +127,10 @@ public class XmlExport {
 			tabletowrite += "<TABLE BORDER=\"1\">\n ";
 			int ns = i+1;
 			tabletowrite += "<CAPTION>Automate "+ns+"</CAPTION>\n";
-			tabletowrite += "<TR><TH></TH>\n";
+//			tabletowrite += "<TR><TH></TH>\n";
 
 			String[][] table = auto.transitionTable();
-			for (int j=0; j<auto.getAutomate().size();j++) {
+			for (int j=0; j<auto.getAutomate().size()+1;j++) {
 				tabletowrite += "<TR>\n";
 				for (int k=0; k<table[j].length; k++) {
 					tabletowrite += "<TH>"+table[j][k]+"</TH>\n";
