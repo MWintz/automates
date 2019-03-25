@@ -8,23 +8,46 @@ public class Automate {
 	private HashMap<String,State> automate;
 	private boolean determinist;
 	
+	/**
+	 * Construct of an Automate
+	 */
 	public Automate() {
 		alphabet=new ArrayList<Alphabet>();
 		automate=new HashMap<String,State>();
 		determinist = this.testDeterminist();
 	}
 	
-	public  Automate(ArrayList<Alphabet> alphabet) {
+	/**
+	 * construct an automate with an initial alphabet
+	 * @param alphabet
+	 */
+	
+	public Automate(ArrayList<Alphabet> alphabet) {
 		this.alphabet=alphabet;
 	}
+	
+	/**
+	 * get alphabet of the automate
+	 * @return alphabet
+	 */
 	
 	public ArrayList<Alphabet> getAlphabet() {
 		return alphabet;
 	}
 
+	/**
+	 * set the alphabet of the automate
+	 * @param alphabet
+	 */
+	
 	public void setAlphabet(ArrayList<Alphabet> alphabet) {
 		this.alphabet = alphabet;
 	}
+	
+	/**
+	 * add an alphabet if the alphabet didn't exist
+	 * @param alpha
+	 */
 	
 	public void addAlphabet(Alphabet alpha) {
 		int i=0;
@@ -40,18 +63,39 @@ public class Automate {
 			this.alphabet.add(alpha);
 	}
 
+	/**
+	 * get all states of the automate
+	 * @return automate
+	 */
+	
 	public HashMap<String, State> getAutomate() {
 		return automate;
 	}
 
+	/**
+	 * set the states of the automate
+	 * @param automate
+	 */
+	
 	public void setAutomate(HashMap<String, State> automate) {
 		this.automate = automate;
 	}
+	
+	/**
+	 * return a String description of the state of the automate 
+	 * if it's a determinist automate or not
+	 * @return String
+	 */
 	
 	public String isDeterminist() {
 		return determinist ? "Determinist" : "Not determinist";
 	}
 
+	/**
+	 * set the boolean how indicate to us if an automate is determinist or not 
+	 * @param determinist
+	 */
+	
 	public void setDeterminist(boolean determinist) {
 		this.determinist = determinist;
 	}
@@ -75,6 +119,12 @@ public class Automate {
 		return test;
 	}
 
+	/**
+	 * gives to us a list of the initial or the final state
+	 * @param type
+	 * @return ArrayList<State>
+	 */
+	
 	public ArrayList<State> getInitial_Final_State(String type) {
 		ArrayList<State> initial_final_state=new ArrayList<State>();
 		
@@ -88,6 +138,12 @@ public class Automate {
 		}	
 		return initial_final_state;
 	}
+	
+	/**
+	 * this is the algorithm of word recognition
+	 * @param word
+	 * @return boolean
+	 */
 	
 	public String wordRecognition(String word) {
 		boolean result,stop;
@@ -169,6 +225,11 @@ public class Automate {
 		return incoming_state;
 	}
 	
+	/**
+	 * this function allow us to get the state how have the max incoming transitions
+	 * @return State
+	 */
+	
 	public State getMaxIncomingTransitionState() {
 		State maxS = null;
 		int maxT = 0;
@@ -181,6 +242,12 @@ public class Automate {
 		return maxS;
 	}
 	
+	/**
+	 * gives us an alphabet by his value
+	 * @param value
+	 * @return Alphabet
+	 */
+	
 	public Alphabet getAlphabetByChar(char value) {
 		Alphabet alph_res = null;
 		for(Alphabet alph : this.alphabet) {
@@ -191,6 +258,11 @@ public class Automate {
 		}
 		return alph_res;
 	}
+	
+	/**
+	 * this is the algorithm of completion
+	 * it calculate the puits state if the automate don't have one it will create one
+	 */
 	
 	public void completion() {
 		State puitsState = null;

@@ -4,7 +4,7 @@ import turing.TuringMachin;
 
 public class TestTuring {
 	public static void main(String[] args) {
-		TuringMachin turing = new TuringMachin("add1");
+		TuringMachin turing = new TuringMachin("dup");
 	
 		String binary_value = "111";
 		String result = turing.turing(binary_value);

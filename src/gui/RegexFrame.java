@@ -109,7 +109,7 @@ public class RegexFrame extends JFrame implements Runnable{
 				if(!result_automate1.testDeterminist())
 					result_automate1.determinize();
 				
-				result_automate1.minimisation();
+				//result_automate1.minimisation();
 				
 				TreeBuilder builder2 = new TreeBuilder();
 				builder2.setFormula(textFieldExp2.getText());
@@ -122,7 +122,7 @@ public class RegexFrame extends JFrame implements Runnable{
 				if(!result_automate2.testDeterminist())
 					result_automate2.determinize();
 				
-				result_automate2.minimisation();
+				//result_automate2.minimisation();
 				
 				String equals=result_automate1.equals(result_automate2);
 
@@ -177,7 +177,7 @@ public class RegexFrame extends JFrame implements Runnable{
 					result_automate.synchronization();
 					if(!result_automate.testDeterminist())
 						result_automate.determinize();
-					result_automate.minimisation();
+					//result_automate.minimisation();
 				}
 				String auto_res=result_automate.wordRecognition(textAreaTarS.getText());
 				

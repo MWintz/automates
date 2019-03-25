@@ -12,6 +12,10 @@ public class State {
 	protected HashSet<Transition> transition;
 	protected HashSet<TuringTransition> turing_transition;
 	
+	/**
+	 * default construct
+	 */
+	
 	public State() {
 		this.id_state = "";
 		this.isFinal = false;
@@ -19,6 +23,13 @@ public class State {
 		this.transition = new HashSet<Transition>();
 		this.turing_transition = new HashSet<TuringTransition>();
 	}
+	
+	/**
+	 * Construct by id_state and the boolean
+	 * @param id_sate
+	 * @param isFinal
+	 * @param isInitial
+	 */
 	
 	public State(String id_sate, boolean isFinal, boolean isInitial) {
 		this.id_state=id_sate;
@@ -28,34 +39,74 @@ public class State {
 		this.turing_transition = new HashSet<TuringTransition>();
 	}
 
+	/**
+	 * gives to us the id of this State
+	 * @return String
+	 */
+	
 	public String getId_state() {
 		return id_state;
 	}
 
+	/**
+	 * set the id of this State
+	 * @param id_state
+	 */
+	
 	public void setId_state(String id_state) {
 		this.id_state = id_state;
 	}
 
+	/**
+	 * Inform us if this state is final
+	 * @return boolean
+	 */
+	
 	public boolean isFinal() {
 		return isFinal;
 	}
 
+	/**
+	 * set final boolean
+	 * @param isFinal
+	 */
+	
 	public void setFinal(boolean isFinal) {
 		this.isFinal = isFinal;
 	}
 
+	/**
+	 * Inform us if this state is initial
+	 * @return
+	 */
+	
 	public boolean isInitial() {
 		return isInitial;
 	}
+	
+	/**
+	 * set initial boolean
+	 * @param isFinal
+	 */
 
 	public void setInitial(boolean isInitial) {
 		this.isInitial = isInitial;
 	}
 
+	/**
+	 * get all transitions
+	 * @return HashSet<Transition>
+	 */
+	
 	public HashSet<Transition> getTransition() {
 		return transition;
 	}
 
+	/**
+	 * set all transitions
+	 * @param transition
+	 */
+	
 	public void setTransition(HashSet<Transition> transition){
 		this.transition = transition;
 	}
@@ -67,6 +118,12 @@ public class State {
 	public void setTuring_transition(HashSet<TuringTransition> turing_transition) {
 		this.turing_transition = turing_transition;
 	}
+	
+	/**
+	 * add a transition to the group of transitions if this transitions didn't exist
+	 * @param transition
+	 * @throws ExistedTransitionException
+	 */
 	
 	public void addTransition(Transition transition) throws ExistedTransitionException {
 		if(!this.transition.contains(transition)) {
@@ -85,6 +142,12 @@ public class State {
 			throw new ExistedTransitionException("La transistion : "+transition+" existe déjà dans l'état ("+id_state+")");
 		}
 	}
+	
+	/**
+	 * Delete a transition 
+	 * @param transition
+	 * @throws ExistedTransitionException
+	 */
 	
 	public void deletTransition(Transition transition) throws ExistedTransitionException {
 		if(this.transition.contains(transition)) {

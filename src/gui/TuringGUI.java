@@ -46,6 +46,7 @@ public class TuringGUI extends JFrame implements Runnable{
 		comboBox.addItem("add 1");
 		comboBox.addItem("substract 1");
 		comboBox.addItem("multiplication by 2");
+		comboBox.addItem("double the list");
 		comboBox.setBounds(170, 40, 192, 24);
 		getContentPane().add(comboBox);
 		
@@ -78,6 +79,9 @@ public class TuringGUI extends JFrame implements Runnable{
 						break;
 					case"multiplication by 2":
 						turing = new TuringMachin("mult2");
+						break;
+					case"double the list":
+						turing = new TuringMachin("dup");
 						break;
 				}
 				if(bits.getText() != null) {

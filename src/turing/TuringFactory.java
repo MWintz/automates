@@ -154,4 +154,50 @@ public class TuringFactory {
 		
 		return mult_automate;
 	}
+
+	public static Automate dup() {
+		Automate dup_automate = new Automate();
+		dup_automate.setAlphabet(AutomateRepository.randomAlphabet(2, "BINARY"));
+		Alphabet tuAlphabetNull = new Alphabet(TuringMachin.NULL, false);
+		dup_automate.getAlphabet().add(tuAlphabetNull);
+		
+		State e1 = new State("e1", false, true);
+		State e2 = new State("e2", false, false);
+		State e3 = new State("e3", false, false);
+		State e4 = new State("e4", false, false);
+		State e5 = new State("e5", true, false);
+		//e1
+		TuringTransition tran1 = new TuringTransition(tuAlphabetNull, tuAlphabetNull, +1, e2);
+		//e2
+		TuringTransition tran2 = new TuringTransition(AutomateRepository.ZERO, AutomateRepository.ZERO, +1, e2);
+		TuringTransition tran3 = new TuringTransition(AutomateRepository.UN, AutomateRepository.ZERO, -1, e3);
+		TuringTransition tran4 = new TuringTransition(tuAlphabetNull, tuAlphabetNull, -1, e4);
+		//e3
+		TuringTransition tran5 = new TuringTransition(AutomateRepository.ZERO, AutomateRepository.ZERO, -1, e3);
+		TuringTransition tran6 = new TuringTransition(tuAlphabetNull, AutomateRepository.ZERO, +1, e2);
+		//e4
+		TuringTransition tran7 = new TuringTransition(AutomateRepository.ZERO, AutomateRepository.UN, -1, e4);
+		TuringTransition tran8 = new TuringTransition(tuAlphabetNull, tuAlphabetNull, -1, e5);
+		
+		try {
+			e1.addTuringTransition(tran1);
+			e2.addTuringTransition(tran2);
+			e2.addTuringTransition(tran3);
+			e2.addTuringTransition(tran4);
+			e3.addTuringTransition(tran5);
+			e3.addTuringTransition(tran6);
+			e4.addTuringTransition(tran7);
+			e4.addTuringTransition(tran8);
+		} catch (ExistedTransitionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		dup_automate.getAutomate().put(e1.getId_state(), e1);
+		dup_automate.getAutomate().put(e2.getId_state(), e2);
+		dup_automate.getAutomate().put(e3.getId_state(), e3);
+		dup_automate.getAutomate().put(e4.getId_state(), e4);
+		dup_automate.getAutomate().put(e5.getId_state(), e5);
+		return dup_automate;
+	}
 }

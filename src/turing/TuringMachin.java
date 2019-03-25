@@ -43,6 +43,9 @@ public class TuringMachin {
 			case "mult2":
 				turing_automate = TuringFactory.mult2();
 				break;
+			case "dup":
+				turing_automate = TuringFactory.dup();
+				break;
 		}
 	}
 	
