@@ -111,12 +111,16 @@ public class XmlExport {
 			fullquestion = typeFullQuestion;
 			Automate auto = this.list.get(i);
 			Question quest;
-			switch(question) {
+			switch(this.question) {
 			case "deter" : quest = new Deter(auto);
+				break;
 			//TODO find a way to modify the number of question without modifying the code
 			case "recognition" : quest = new Recognition(auto, alphalist.get(i), 3);
+				break;
 			case "determiniser" : quest = new Determiniser(auto);
+				break;
 			default : quest = new Deter(auto);
+				break;
 			}
 			fullquestion = fullquestion.replaceAll("#NUMBER#",""+i);
 			fullquestion = fullquestion.replace("#NAME#",question+" "+i);
