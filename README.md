@@ -19,7 +19,7 @@ Cergy Pontoise 2018/2019
 	git clone https://github.com/MWintz/automates
 ```	
 
-puis aller sur votre environnement de développement (IDE)
+puis allez sur votre environnement de développement (IDE)
 ```
 	Eclipse, NetBeans..
 ```
