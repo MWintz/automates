@@ -29,7 +29,7 @@ lancement de la machine de turing
 	gui/TuringFrame.java
 ```
 
-les différents testes
+les différents tests
 ```
 	test/*.java
 ```
